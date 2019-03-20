@@ -1,0 +1,9 @@
+.idea
+/out
+/.gradle
+/build
+/log
+*.log
+*~
+*.swo
+*.swp
