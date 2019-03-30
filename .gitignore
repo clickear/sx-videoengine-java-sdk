@@ -7,3 +7,9 @@
 *~
 *.swo
 *.swp
+
+
+
+
+/workspace/output
+!/workspace/output/empty

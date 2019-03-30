@@ -7,7 +7,16 @@ import com.seeshion.exceptions.RenderException;
 public class VideoEngine {
 
     /**
-     * VIDEO Render native methods
+     * 进程模式
+     * */
+    private native String nVeCreateRenderProcess(String tplFolder, String outputPath, int key) throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
+    private native int nVeRenderProcessSetReplaceableFiles(String id, String[] paths);
+    private native int nVeRenderProcessStart(String id, boolean isRelayAlbum);
+    private native String nVeRenderProcessStatus(String id);
+    private native void nVeRenderProcessRelease(String id);
+
+    /**
+     * 线程模式
      * */
     private native long nCreateRender(String tplFolder, String outputPath) throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
     private native boolean nSetReplaceableFilePaths(long renderId, String paths[]);
@@ -16,53 +25,85 @@ public class VideoEngine {
     private native float nGetRenderProgress(long renderId);
     private native boolean nDestroyRender(long renderId);
 
+
+
     /**
-     * video render process native methods
+     * 创建进程模式渲染对象
      *
+     * @param tplFolder, 模板目录
+     * @param outputPath, 输出路径
+     * @param key 随机数，同一时间保持唯一
+     * @return string render id
      * */
-    private native String nVeCreateRenderProcess(String tplFolder, String outputPath, int key);
-    private native int nVeRenderProcessSetReplaceableFiles(String id, String[] paths);
-    private native int nVeRenderProcessStart(String id, boolean isRelayAlbum);
-    private native String nVeRenderProcessStatus(String id);
-    private native void nVeRenderProcessRelease(String id);
-
-
-    public String pCreateRender(String tplFolder, String outputPath, int key) {
+    public String pCreateRender(String tplFolder, String outputPath, int key) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
        return this.nVeCreateRenderProcess(tplFolder, outputPath, key) ;
     }
 
-    public int pChangeAssetPaths(String id, String paths[]) {
-        return this.nVeRenderProcessSetReplaceableFiles(id, paths);
+
+    /**
+     * 设置素材
+     *
+     * @param id, render id
+     * @param paths, 素材数组
+     * @return boolean
+     *
+     * */
+    public boolean pChangeAssetPaths(String id, String paths[]) {
+        return this.nVeRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
     }
 
-    public int pStartRender(String id)  {
-        return this.nVeRenderProcessStart(id, false);
+    /**
+     * 开始渲染
+     *
+     * @param id, render id
+     * @return true
+     * */
+    public boolean pStartRender(String id)  {
+        return this.nVeRenderProcessStart(id, false) == 0 ? true : false;
     }
 
-    public int pStartRender(String id, boolean isRelayAlbum)  {
-        return this.nVeRenderProcessStart(id, isRelayAlbum);
+
+    /**
+     * 开始渲染　
+     *
+     * @param id, render id
+     * @param isRelayAlbum 是否是动态模板
+     * @return boolean
+     * */
+
+    public boolean pStartRender(String id, boolean isRelayAlbum)  {
+        return this.nVeRenderProcessStart(id, isRelayAlbum) == 0 ? true : false;
     }
 
+    /**
+     * 获取渲染状态
+     *
+     * @param id, render id
+     * @return string
+     *
+     * */
     public String pGetRenderStatus(String id) {
         return this.nVeRenderProcessStatus(id);
     }
 
+    /**
+     * 释放对象
+     *
+     * @param id, render id
+     * */
     public void pDestroyRender(String id) {
         this.nVeRenderProcessRelease(id);
     }
 
 
     /**
-     * license register / check
-     *
+     *  证书相关
      * */
     private native boolean nRegisterLicense(String licenseStr);
     private native boolean nIsLicenseValid();
     private native String nGetLicenseProfile();
 
     public native void nThrowException() throws InvalidLicenseException, NotSupportedTemplateException;
-
-
 
     public void testException() {
         try {
@@ -73,7 +114,6 @@ public class VideoEngine {
             e.printStackTrace();
         }
     }
-
 
 
 

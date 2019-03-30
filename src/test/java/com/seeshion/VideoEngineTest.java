@@ -6,6 +6,7 @@ import com.seeshion.exceptions.RenderException;
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 
+import java.io.File;
 import java.sql.Time;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VideoEngineTest {
 
+    private  String license = "zPfg3zBjSVGqn/8GdXrN5dAtMFHUvDQEMBCFWAajVjtxkSA4mi8fQu9EtNHxE+G5zVqFOlZzTbJWTwhVFbtmWq8eti9sR2Pe8KO3TubpiWpZSXPGFBu6+suQYYlt/RFhNFc5am/3roENVzrWckuZIBg8pwbFjdzXt6bBJBPg93WVbVu8QETjQc9z2XBw+02LXB29PLg1xsclDi8nhQOB6oI8Iu2Z+Oh8HdWcS+j0BYKECHjvmUCBaFaNJBty0UfVoX0pGtN9Uou0vrT3dyWKpZHs0IZD+WebN8pfFtGWWIDwGkrX0YjPNDx/cWLo6bNIdbTqonxx6rQJ5ymaMOTchipRS15htnrUrDf5P3Bi+w5ht6zD5pTw8sI9q1bTZC3E5tf9vZBnALluHuXc9NOKbA==";
 
     @Test
     public void testException() {
@@ -23,104 +25,99 @@ public class VideoEngineTest {
 
     @Test
     public void testLicense() {
-        String license = "lTGjb5rCMjl3n2KsH15n9vPDHDu7/O5wmRH5c0gX5cO7nQxidsFa3gpN9tr3u138UXcjjePGG3fQ3RbZQIpmMJEqgkiahLUkiIsSjqiT9LZNR5r9tFrUwoOym8OD9ozttMMfF+Tng8aKjSxGl0siTg==";
         VideoEngine engine = new VideoEngine();
         engine.registerLicense(license);
         boolean valid = engine.isLicenseValid();
         return;
     }
 
+
+    /**
+     * 进程模式渲染测试
+     *
+     * */
     @Test
     public void testRenderProcess() {
-        String license = "lTGjb5rCMjl3n2KsH15n9vPDHDu7/O5wmRH5c0gX5cO7nQxidsFa3gpN9tr3u138UXcjjePGG3fQ3RbZQIpmMJEqgkiahLUkiIsSjqiT9LZNR5r9tFrUwoOym8OD9ozttMMfF+Tng8aKjSxGl0siTg==";
+        File f = new File("");
+        String basePath = f.getAbsolutePath();
+
         VideoEngine engine = new VideoEngine();
         engine.registerLicense(license);
-        String tplFolder = "/home/slayer/Desktop/export10/Calorie";
-        String outputPath = "/home/slayer/Desktop/newest.mp4";
+
+        // test template flash
+//        String tplFolder = basePath + "/workspace/template/Flash";
+//        String outputPath = basePath + "/workspace/output/flash.mp4";
+//
+//        String[] paths = {
+//                "",
+//                basePath + "/workspace/544x960.test0.png"
+//        };
+
+
+        // test template calorie
+//        String tplFolder = basePath + "/workspace/template/Calorie";
+//        String outputPath = basePath + "/workspace/output/calorie.mp4";
+//
+//        String[] paths = {
+//                basePath + "/workspace/544x960.test0.png"
+//        };
+
+
+        // test template Screen
+        String tplFolder = basePath + "/workspace/template/Screen";
+        String outputPath = basePath + "/workspace/output/screen.mp4";
 
         String[] paths = {
-                "/home/slayer/Desktop/export/asset2.jpg"
+                basePath + "/workspace/544x960.test0.png"
         };
 
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-                Random r = new Random();
-                String renderId = engine.pCreateRender(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
-                int num = engine.pChangeAssetPaths(renderId, paths);
-                int ret = engine.pStartRender(renderId, false);
-                String str = engine.pGetRenderStatus(renderId);
-                System.out.println("status --- : " + str);
-//            }
-//        });
+        Random r = new Random();
+        String renderId = null;
 
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Random r = new Random();
-                String outputPath = "/home/slayer/Desktop/newest1.mp4";
-                String renderId = engine.pCreateRender(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
-                int num = engine.pChangeAssetPaths(renderId, paths);
-                int ret = engine.pStartRender(renderId);
-                String str = engine.pGetRenderStatus(renderId);
-                System.out.println("status --- : " + str);
-            }
-        });
-
-
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Random r = new Random();
-                String outputPath = "/home/slayer/Desktop/newest2.mp4";
-                String renderId = engine.pCreateRender(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
-                int num = engine.pChangeAssetPaths(renderId, paths);
-                int ret = engine.pStartRender(renderId, false);
-                String str = engine.pGetRenderStatus(renderId);
-                System.out.println("status --- : " + str);
-            }
-        });
-
-
-        Thread t3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Random r = new Random();
-                String outputPath = "/home/slayer/Desktop/newest3.mp4";
-                String renderId = engine.pCreateRender(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
-                int num = engine.pChangeAssetPaths(renderId, paths);
-                int ret = engine.pStartRender(renderId);
-                String str = engine.pGetRenderStatus(renderId);
-                System.out.println("status --- : " + str);
-            }
-        });
-
-//        t.start();
-//        t1.start();
-//        t2.start();
-//        t3.start();
-
-        System.out.println("main thread start ---");
+        // 创建 render
         try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
+            renderId = engine.pCreateRender(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
+        } catch (RenderException e) {
+            e.printStackTrace();
+        } catch (NotSupportedTemplateException e) {
+            e.printStackTrace();
+        } catch (InvalidLicenseException e) {
             e.printStackTrace();
         }
-        System.out.println("main thread end ---");
+        if (renderId.equals("")) {
+            System.out.println("create render failed");
+            return;
+        }
 
-//        engine.pDestroyRender(renderId);
+        // 设置素材
+        boolean set = engine.pChangeAssetPaths(renderId, paths);
+        if (!set) {
+            System.out.println("set assets error");
+        }
+
+        // 开始渲染, 并获取结果
+        boolean ret = engine.pStartRender(renderId, false);
+
+        // 获取渲染后的状态描述
+        String status = engine.pGetRenderStatus(renderId);
+        System.out.println("finish with start: " + ret + ", status: " + status);
+
+        engine.pDestroyRender(renderId);
     }
 
+
+
+    /**
+     * 线程模式渲染测试
+     *
+     * @deprecated
+     * */
 
     @Test
     public void testRender() {
         String tplFolder = "/home/slayer/Desktop/template/Calorie";
         String outputPath = "/home/slayer/Desktop/newest.mp4";
-//        String license = "lTGjb5rCMjl3n2KsH15n9vPDHDu7/O5wmRH5c0gX5cO7nQxidsFa3gpN9tr3u138UXcjjePGG3fQ3RbZQIpmMJEqgkiahLUkiIsSjqiT9LZNR5r9tFrUwoOym8OD9ozttMMfF+Tng8aKjSxGl0siTg==";
-//        String license = "0gUIWb7AuYS0/ULStx+thJ0uMRkKFbTnomn0rntQG+QXhUpTco04Wh7qV4RyjIAV9mLEYWcU5YanAdJ9iTihjzLm6kOlPc1go7s5oDXO7jXTUJG3F567/rjFwcE40tNavQgeew0f6NC0durbX/vwvAlgai9YcNOlupSe0ey7jjO49AVgDilG/szB9wDZtboTCBL+ecQoXanVVxjbqnXPTJFf7boHeUPHNCiI6VEb2FhI0dWSXIwfzEMiZPA5X8B1DLW2zYeRvyxlm2DjRVnqRdwbEBVOUd7ifDOL5AWSZl8+3V4yfPkETifrccnmtImn";
-
-        String license="zPfg3zBjSVGqn/8GdXrN5dAtMFHUvDQEMBCFWAajVjtxkSA4mi8fQu9EtNHxE+G5zVqFOlZzTbJWTwhVFbtmWq8eti9sR2Pe8KO3TubpiWpZSXPGFBu6+suQYYlt/RFhNFc5am/3roENVzrWckuZIBg8pwbFjdzXt6bBJBPg93WVbVu8QETjQc9z2XBw+02LXB29PLg1xsclDi8nhQOB6oI8Iu2Z+Oh8HdWcS+j0BYKECHjvmUCBaFaNJBty0UfVoX0pGtN9Uou0vrT3dyWKpZHs0IZD+WebN8pfFtGWWIDwGkrX0YjPNDx/cWLo6bNIdbTqonxx6rQJ5ymaMOTchipRS15htnrUrDf5P3Bi+w5ht6zD5pTw8sI9q1bTZC3E5tf9vZBnALluHuXc9NOKbA==";
         VideoEngine engine = new VideoEngine();
         engine.registerLicense(license);
         System.out.println(engine.getLicenseProfile());
@@ -165,29 +162,5 @@ public class VideoEngineTest {
             }
         }
         engine.destroyRender(renderId);
-    }
-
-    @Test
-    public void createRender() {
-    }
-
-    @Test
-    public void changeAssetPaths() {
-    }
-
-    @Test
-    public void startRender() {
-    }
-
-    @Test
-    public void getRenderProgress() {
-    }
-
-    @Test
-    public void getRenderValidateError() {
-    }
-
-    @Test
-    public void getRenderValidateErrorIndex() {
     }
 }
