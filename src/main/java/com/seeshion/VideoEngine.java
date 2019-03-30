@@ -15,6 +15,15 @@ public class VideoEngine {
     private native String nVeRenderProcessStatus(String id);
     private native void nVeRenderProcessRelease(String id);
 
+    private native String nCreateRenderProcess(String tplFolder, String outputPath, int key);
+    private native boolean nRegisterRenderProcessLicense(String id, String licenseStr);
+    private native String nRenderProcessLicenseProfile(String id);
+    private native boolean nRenderProcessLicenseIsValid(String id);
+    private native int nRenderProcessSetReplaceableFiles(String id, String[] paths);
+    private native int nRenderProcessStart(String id, boolean isRelayAlbum)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
+    private native String nRenderProcessStatus(String id);
+    private native void nRenderProcessRelease(String id);
+
     /**
      * 线程模式
      * */
@@ -25,6 +34,34 @@ public class VideoEngine {
     private native float nGetRenderProgress(long renderId);
     private native boolean nDestroyRender(long renderId);
 
+
+    public String createRenderProcess(String tplFolder, String outputFile, int key) {
+        return nCreateRenderProcess(tplFolder, outputFile, key);
+    }
+    public boolean registerRenderProcessLicense(String id, String licenseStr) {
+        return nRegisterRenderProcessLicense(id, licenseStr);
+    }
+    public String getRenderProcessLicenseProfile(String id) {
+       return nRenderProcessLicenseProfile(id);
+    }
+    public boolean isRenderProcessLicenseValid(String id) {
+        return nRenderProcessLicenseIsValid(id);
+    }
+    public boolean setRenderProcessReplaceableFiles(String id, String[] paths) {
+        return nRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
+    }
+
+    public boolean startRenderProcess(String id, boolean isAlbum) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
+        return nRenderProcessStart(id, isAlbum) == 0 ? true : false;
+    }
+
+    public String getRenderProcessStatus(String id) {
+        return nRenderProcessStatus(id);
+    }
+
+    public void destroyRenderProcess(String id) {
+        nRenderProcessRelease(id);
+    }
 
 
     /**
