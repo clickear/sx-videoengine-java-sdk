@@ -6,7 +6,6 @@ import com.seeshion.exceptions.RenderException;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Random;
 
 
 public class RenderProcessTest {
@@ -51,50 +50,20 @@ public class RenderProcessTest {
 //                basePath + "/workspace/544x960.test0.png"
 //        };
 
+        VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+        task.setAssetPaths(paths);
 
-        Random r = new Random();
-        String renderId = null;
-
-
-        // 创建 render
-        renderId = engine.createRenderProcess(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
-        engine.registerRenderProcessLicense(renderId, license);
-
-        if (engine.isRenderProcessLicenseValid(renderId)) {
-            System.out.println("valid license");
-        }
-
-        System.out.println(engine.getRenderProcessLicenseProfile(renderId));
-
-        if (renderId.equals("")) {
-            System.out.println("create render failed");
-            return;
-        }
-
-        System.out.println("create render id: " + renderId);
-        // 设置素材
-        boolean set = engine.setRenderProcessReplaceableFiles(renderId, paths);
-        if (!set) {
-            System.out.println("set assets error");
-        }
-
-        // 开始渲染, 并获取结果
-        boolean ret = false;
         try {
-            ret = engine.startRenderProcess(renderId, false);
+            boolean ret = task.render();
+        } catch (InvalidLicenseException e) {
+            e.printStackTrace();
         } catch (RenderException e) {
             e.printStackTrace();
         } catch (NotSupportedTemplateException e) {
             e.printStackTrace();
-        } catch (InvalidLicenseException e) {
-            e.printStackTrace();
+        } finally {
+            task.destroy();
         }
-
-        // 获取渲染后的状态描述
-        String status = engine.getRenderProcessStatus(renderId);
-        System.out.println("finish with start ret: " + ret + ", status: " + status);
-
-        engine.destroyRenderProcess(renderId);
     }
 
 
