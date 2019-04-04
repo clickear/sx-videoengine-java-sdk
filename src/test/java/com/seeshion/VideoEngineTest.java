@@ -97,7 +97,7 @@ public class VideoEngineTest {
         }
 
         // 开始渲染, 并获取结果
-        boolean ret = engine.pStartRender(renderId, false);
+        boolean ret = engine.pStartRender(renderId);
 
         // 获取渲染后的状态描述
         String status = engine.pGetRenderStatus(renderId);

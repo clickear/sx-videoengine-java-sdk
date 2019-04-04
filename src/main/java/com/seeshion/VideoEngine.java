@@ -11,7 +11,7 @@ public class VideoEngine {
      * */
     private native String nVeCreateRenderProcess(String tplFolder, String outputPath, int key) throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
     private native int nVeRenderProcessSetReplaceableFiles(String id, String[] paths);
-    private native int nVeRenderProcessStart(String id, boolean isRelayAlbum);
+    private native int nVeRenderProcessStart(String id);
     private native String nVeRenderProcessStatus(String id);
     private native void nVeRenderProcessRelease(String id);
 
@@ -20,7 +20,8 @@ public class VideoEngine {
     private native String nRenderProcessLicenseProfile(String id);
     private native boolean nRenderProcessLicenseIsValid(String id);
     private native int nRenderProcessSetReplaceableFiles(String id, String[] paths);
-    private native int nRenderProcessStart(String id, boolean isRelayAlbum)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
+    private native int nRenderProcessSetMusicFile(String id, String musicPath, boolean loop);
+    private native int nRenderProcessStart(String id)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
     private native String nRenderProcessStatus(String id);
     private native void nRenderProcessRelease(String id);
 
@@ -51,8 +52,11 @@ public class VideoEngine {
         return nRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
     }
 
-    public boolean startRenderProcess(String id, boolean isAlbum) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
-        return nRenderProcessStart(id, isAlbum) == 0 ? true : false;
+    public boolean setRenderProcessMusicFile(String id, String musicPath, boolean loop) {
+        return nRenderProcessSetMusicFile(id, musicPath, loop) == 0 ? true : false;
+    }
+    public boolean startRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
+        return nRenderProcessStart(id) == 0 ? true : false;
     }
 
     public String getRenderProcessStatus(String id) {
@@ -96,21 +100,9 @@ public class VideoEngine {
      * @return true
      * */
     public boolean pStartRender(String id)  {
-        return this.nVeRenderProcessStart(id, false) == 0 ? true : false;
+        return this.nVeRenderProcessStart(id) == 0 ? true : false;
     }
 
-
-    /**
-     * 开始渲染　
-     *
-     * @param id, render id
-     * @param isRelayAlbum 是否是动态模板
-     * @return boolean
-     * */
-
-    public boolean pStartRender(String id, boolean isRelayAlbum)  {
-        return this.nVeRenderProcessStart(id, isRelayAlbum) == 0 ? true : false;
-    }
 
     /**
      * 获取渲染状态

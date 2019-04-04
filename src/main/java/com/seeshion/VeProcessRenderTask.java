@@ -10,18 +10,22 @@ public class VeProcessRenderTask {
 
     private String license;
     private String tplFolder;
-    private String outputFile;
+    private String outputPath;
     private String[] assetPaths;
     private VideoEngine engine;
     private String renderId;
     private String errorMsg = "";
     private TemplateType templateType = TemplateType.NORMAL_TEMPLATE;
     private boolean initialized = false;
+    private String musicPath;
+    private boolean loopMusic = false;
 
-    public VeProcessRenderTask(String license, String tplFolder, String outputFile) {
+
+    public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
         this.license = license;
         this.tplFolder = tplFolder;
-        this.outputFile = outputFile;
+        this.outputPath = outputPath;
+
         initTask();
         if (initialized) {
             engine.registerRenderProcessLicense(renderId, license);
@@ -37,7 +41,7 @@ public class VeProcessRenderTask {
         if (engine == null) {
             engine = new VideoEngine();
             Random r = new Random();
-            renderId = engine.createRenderProcess(tplFolder, outputFile, r.nextInt(Integer.MAX_VALUE));
+            renderId = engine.createRenderProcess(tplFolder, outputPath, r.nextInt(Integer.MAX_VALUE));
             if (renderId.isEmpty()) {
                 return false;
             }
@@ -55,7 +59,7 @@ public class VeProcessRenderTask {
         return engine.isRenderProcessLicenseValid(renderId);
     }
 
-    public String getProcessProfile() {
+    public String getLicenseProfile() {
         if (!initialized){
             return "";
         }
@@ -72,6 +76,12 @@ public class VeProcessRenderTask {
         return true;
     }
 
+    public boolean setMusicFile(String musicPath, boolean loopMusic) {
+        this.musicPath = musicPath;
+        this.loopMusic = loopMusic;
+        return true;
+    }
+
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {
         if (!initialized) {
             errorMsg = "task not initialized";
@@ -85,7 +95,15 @@ public class VeProcessRenderTask {
             }
         }
 
-        boolean success = engine.startRenderProcess(renderId, templateType == TemplateType.ALBUM_TEMPLATE);
+        if (this.musicPath.length() > 0) {
+            boolean set = engine.setRenderProcessMusicFile(renderId, this.musicPath, this.loopMusic);
+            if (!set) {
+                errorMsg = "set task music paths failed";
+                return false;
+            }
+        }
+
+        boolean success = engine.startRenderProcess(renderId);
         if (!success)  {
             errorMsg = "start render process failed";
             return false;
