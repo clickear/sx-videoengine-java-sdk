@@ -39,37 +39,62 @@ public class RenderProcessTest {
         String basePath = f.getAbsolutePath();
 
         VideoEngine engine = new VideoEngine();
-        // test template flash
-//        String tplFolder = basePath + "/workspace/template/Flash";
-//        String outputPath = basePath + "/workspace/output/flash.mp4";
-//
-//        String[] paths = {
-//                "",
-//                basePath + "/workspace/544x960.test0.png"
-//        };
+
+        /**
+         * 常规模板测试
+         *
+         * Calorie
+         * Flash
+         * Screen
+         *
+         * */
+/*        String tplFolder = basePath + "/workspace/template/Flash";
+        String outputPath = basePath + "/workspace/output/flash.mp4";
+
+        String[] paths = {
+                "",
+                basePath + "/workspace/544x960.test0.png"
+        };*/
 
 
-        // test template calorie
-        String tplFolder = basePath + "/workspace/template/Calorie";
+/*        String tplFolder = basePath + "/workspace/template/Calorie";
         String outputPath = basePath + "/workspace/output/calorie.mp4";
 
         String[] paths = {
                 basePath + "/workspace/544x960.test0.png"
+        };*/
+
+/*        String tplFolder = basePath + "/workspace/template/Screen";
+        String outputPath = basePath + "/workspace/output/screen.mp4";
+
+        String[] paths = {
+                basePath + "/workspace/544x960.test0.png"
+        };*/
+
+
+        /**
+         * 动态模板测试
+         * Album
+         * ChineseStyle
+         * Simple
+         *
+         * */
+
+        String tplFolder = basePath + "/workspace/template/Album";
+        String outputPath = basePath + "/workspace/output/album.mp4";
+
+        String[] paths = {
+                basePath + "/workspace/544x960.test0.png",
+                basePath + "/workspace/544x960.test0.png",
+                basePath + "/workspace/544x960.test0.png"
         };
 
+
         String musicPath = basePath + "/workspace/music.mp3";
-
-        // test template Screen
-//        String tplFolder = basePath + "/workspace/template/Screen";
-//        String outputPath = basePath + "/workspace/output/screen.mp4";
-//
-//        String[] paths = {
-//                basePath + "/workspace/544x960.test0.png"
-//        };
-
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
         task.setAssetPaths(paths);
-        task.setMusicFile(musicPath, true);
+        task.setMusicPath(musicPath, true);
+        task.setMusicLoop(false);
         System.out.println(task.getLicenseProfile());
 
         try {

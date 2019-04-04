@@ -18,8 +18,15 @@ public class VeProcessRenderTask {
     private TemplateType templateType = TemplateType.NORMAL_TEMPLATE;
     private boolean initialized = false;
     private String musicPath;
-    private boolean loopMusic = false;
+    private boolean musicLoop = false;
 
+    public boolean isMusicLoop() {
+        return musicLoop;
+    }
+
+    public void setMusicLoop(boolean musicLoop) {
+        this.musicLoop = musicLoop;
+    }
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
         this.license = license;
@@ -76,9 +83,9 @@ public class VeProcessRenderTask {
         return true;
     }
 
-    public boolean setMusicFile(String musicPath, boolean loopMusic) {
+    public boolean setMusicPath(String musicPath, boolean loopMusic) {
         this.musicPath = musicPath;
-        this.loopMusic = loopMusic;
+        this.musicLoop = loopMusic;
         return true;
     }
 
@@ -95,13 +102,16 @@ public class VeProcessRenderTask {
             }
         }
 
-        if (this.musicPath.length() > 0) {
-            boolean set = engine.setRenderProcessMusicFile(renderId, this.musicPath, this.loopMusic);
+        if (this.musicPath != null && this.musicPath.length() > 0) {
+            boolean set = engine.setRenderProcessMusicFile(renderId, this.musicPath, this.musicLoop);
             if (!set) {
                 errorMsg = "set task music paths failed";
                 return false;
             }
         }
+
+
+        boolean set = engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
 
         boolean success = engine.startRenderProcess(renderId);
         if (!success)  {

@@ -7,7 +7,9 @@ import com.seeshion.exceptions.RenderException;
 public class VideoEngine {
 
     /**
-     * 进程模式
+     * 进程模式(优先维护开发)
+     *
+     * 推荐使用进程模式渲染
      * */
 
     private native String nCreateRenderProcess(String tplFolder, String outputPath, int key);
@@ -16,6 +18,7 @@ public class VideoEngine {
     private native boolean nRenderProcessLicenseIsValid(String id);
     private native int nRenderProcessSetReplaceableFiles(String id, String[] paths);
     private native int nRenderProcessSetMusicFile(String id, String musicPath, boolean loop);
+    private native int nRenderProcessSetMusicLoop(String id, boolean loop);
     private native int nRenderProcessStart(String id)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
     private native String nRenderProcessStatus(String id);
     private native void nRenderProcessRelease(String id);
@@ -36,6 +39,13 @@ public class VideoEngine {
     private native boolean nIsLicenseValid();
     private native String nGetLicenseProfile();
 
+
+    /**********************************************************************************
+     *
+     * 进程模式渲染接口
+     *
+     *
+     **********************************************************************************/
 
     /**
      * 创建进程模式渲染对象
@@ -98,7 +108,7 @@ public class VideoEngine {
 
 
     /**
-     * 设置素材
+     * 设置音乐
      *
      * @param id, render id
      * @param musicPath, 音乐文件路径
@@ -107,6 +117,17 @@ public class VideoEngine {
      * */
     public boolean setRenderProcessMusicFile(String id, String musicPath, boolean loop) {
         return nRenderProcessSetMusicFile(id, musicPath, loop) == 0 ? true : false;
+    }
+
+    /**
+     * 设置音乐是否循环
+     *
+     * @param id, render id
+     * @param loop 是否循环音乐
+     * @return boolean
+     * */
+    public boolean setRenderProcessMusicLoop(String id, boolean loop) {
+        return nRenderProcessSetMusicLoop(id, loop) == 0 ? true : false;
     }
 
     /**
@@ -140,6 +161,15 @@ public class VideoEngine {
     }
 
 
+
+
+
+    /**********************************************************************************
+     *
+     * 线程模式渲染接口,不再推荐使用
+     *
+     *
+     **********************************************************************************/
     public native void nThrowException() throws InvalidLicenseException, NotSupportedTemplateException;
 
     public void testException() {
