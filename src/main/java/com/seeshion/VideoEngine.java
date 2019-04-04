@@ -9,11 +9,6 @@ public class VideoEngine {
     /**
      * 进程模式
      * */
-    private native String nVeCreateRenderProcess(String tplFolder, String outputPath, int key) throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
-    private native int nVeRenderProcessSetReplaceableFiles(String id, String[] paths);
-    private native int nVeRenderProcessStart(String id);
-    private native String nVeRenderProcessStatus(String id);
-    private native void nVeRenderProcessRelease(String id);
 
     private native String nCreateRenderProcess(String tplFolder, String outputPath, int key);
     private native boolean nRegisterRenderProcessLicense(String id, String licenseStr);
@@ -27,6 +22,9 @@ public class VideoEngine {
 
     /**
      * 线程模式
+     *
+     * 不再推荐使用
+     * @deprecated
      * */
     private native long nCreateRender(String tplFolder, String outputPath) throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
     private native boolean nSetReplaceableFilePaths(long renderId, String paths[]);
@@ -34,50 +32,55 @@ public class VideoEngine {
     private native boolean nStartRender(long renderId);
     private native float nGetRenderProgress(long renderId);
     private native boolean nDestroyRender(long renderId);
-
-
-    public String createRenderProcess(String tplFolder, String outputFile, int key) {
-        return nCreateRenderProcess(tplFolder, outputFile, key);
-    }
-    public boolean registerRenderProcessLicense(String id, String licenseStr) {
-        return nRegisterRenderProcessLicense(id, licenseStr);
-    }
-    public String getRenderProcessLicenseProfile(String id) {
-       return nRenderProcessLicenseProfile(id);
-    }
-    public boolean isRenderProcessLicenseValid(String id) {
-        return nRenderProcessLicenseIsValid(id);
-    }
-    public boolean setRenderProcessReplaceableFiles(String id, String[] paths) {
-        return nRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
-    }
-
-    public boolean setRenderProcessMusicFile(String id, String musicPath, boolean loop) {
-        return nRenderProcessSetMusicFile(id, musicPath, loop) == 0 ? true : false;
-    }
-    public boolean startRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
-        return nRenderProcessStart(id) == 0 ? true : false;
-    }
-
-    public String getRenderProcessStatus(String id) {
-        return nRenderProcessStatus(id);
-    }
-
-    public void destroyRenderProcess(String id) {
-        nRenderProcessRelease(id);
-    }
+    private native boolean nRegisterLicense(String licenseStr);
+    private native boolean nIsLicenseValid();
+    private native String nGetLicenseProfile();
 
 
     /**
      * 创建进程模式渲染对象
      *
      * @param tplFolder, 模板目录
-     * @param outputPath, 输出路径
+     * @param outputFile, 输出路径
      * @param key 随机数，同一时间保持唯一
      * @return string render id
      * */
-    public String pCreateRender(String tplFolder, String outputPath, int key) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
-       return this.nVeCreateRenderProcess(tplFolder, outputPath, key) ;
+    public String createRenderProcess(String tplFolder, String outputFile, int key) {
+        return nCreateRenderProcess(tplFolder, outputFile, key);
+    }
+
+
+    /**
+     * 注册 license
+     *
+     * @param id, render id
+     * @param licenseStr, 证书字符串
+     * @return boolean
+     * */
+    public boolean registerRenderProcessLicense(String id, String licenseStr) {
+        return nRegisterRenderProcessLicense(id, licenseStr);
+    }
+
+
+    /**
+     * 获取 License profile
+     *
+     * @param id render id
+     * @return String
+     * */
+    public String getRenderProcessLicenseProfile(String id) {
+       return nRenderProcessLicenseProfile(id);
+    }
+
+
+    /**
+     * 检测注册的 License 是否有效
+     *
+     * @param id, render id
+     * @return boolean
+     * */
+    public boolean isRenderProcessLicenseValid(String id) {
+        return nRenderProcessLicenseIsValid(id);
     }
 
 
@@ -89,48 +92,53 @@ public class VideoEngine {
      * @return boolean
      *
      * */
-    public boolean pChangeAssetPaths(String id, String paths[]) {
-        return this.nVeRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
+    public boolean setRenderProcessReplaceableFiles(String id, String[] paths) {
+        return nRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
     }
 
+
     /**
-     * 开始渲染
+     * 设置素材
      *
      * @param id, render id
-     * @return true
+     * @param musicPath, 音乐文件路径
+     * @param loop 是否循环音乐
+     * @return boolean
      * */
-    public boolean pStartRender(String id)  {
-        return this.nVeRenderProcessStart(id) == 0 ? true : false;
+    public boolean setRenderProcessMusicFile(String id, String musicPath, boolean loop) {
+        return nRenderProcessSetMusicFile(id, musicPath, loop) == 0 ? true : false;
     }
 
-
     /**
-     * 获取渲染状态
+     * 启动渲染
      *
      * @param id, render id
-     * @return string
-     *
+     * @return boolean
      * */
-    public String pGetRenderStatus(String id) {
-        return this.nVeRenderProcessStatus(id);
+    public boolean startRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
+        return nRenderProcessStart(id) == 0 ? true : false;
+    }
+
+
+    /**
+     * 获取渲染后的状态
+     *
+     * @param id, render id
+     * @return String
+     * */
+    public String getRenderProcessStatus(String id) {
+        return nRenderProcessStatus(id);
     }
 
     /**
-     * 释放对象
+     * 销毁渲染对象
      *
      * @param id, render id
      * */
-    public void pDestroyRender(String id) {
-        this.nVeRenderProcessRelease(id);
+    public void destroyRenderProcess(String id) {
+        nRenderProcessRelease(id);
     }
 
-
-    /**
-     *  证书相关
-     * */
-    private native boolean nRegisterLicense(String licenseStr);
-    private native boolean nIsLicenseValid();
-    private native String nGetLicenseProfile();
 
     public native void nThrowException() throws InvalidLicenseException, NotSupportedTemplateException;
 
