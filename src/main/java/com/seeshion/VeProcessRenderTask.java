@@ -94,7 +94,7 @@ public class VeProcessRenderTask {
             errorMsg = "task not initialized";
             return false;
         }
-        if (this.assetPaths.length > 0) {
+        if (this.assetPaths != null && this.assetPaths.length > 0) {
             boolean set = engine.setRenderProcessReplaceableFiles(renderId, this.assetPaths);
             if (!set) {
                 errorMsg = "set task asset paths failed";
