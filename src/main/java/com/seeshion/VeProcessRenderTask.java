@@ -19,14 +19,7 @@ public class VeProcessRenderTask {
     private boolean initialized = false;
     private String musicPath;
     private boolean musicLoop = false;
-
-    public boolean isMusicLoop() {
-        return musicLoop;
-    }
-
-    public void setMusicLoop(boolean musicLoop) {
-        this.musicLoop = musicLoop;
-    }
+    private String subImgJson;
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
         this.license = license;
@@ -57,6 +50,15 @@ public class VeProcessRenderTask {
         return true;
     }
 
+
+
+    public boolean isMusicLoop() {
+        return musicLoop;
+    }
+
+    public void setMusicLoop(boolean musicLoop) {
+        this.musicLoop = musicLoop;
+    }
 
     public void setTemplateType(TemplateType type) {
         this.templateType = type;
@@ -89,6 +91,17 @@ public class VeProcessRenderTask {
         return true;
     }
 
+    /**
+     * 为动态模板设置子素材
+     *
+     * @note 非动态模板设置无效
+     *
+     * */
+    public boolean setDynamicSubFiles(String json) {
+        this.subImgJson = json;
+        return true;
+    }
+
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {
         if (!initialized) {
             errorMsg = "task not initialized";
@@ -106,6 +119,14 @@ public class VeProcessRenderTask {
             boolean set = engine.setRenderProcessMusicFile(renderId, this.musicPath, this.musicLoop);
             if (!set) {
                 errorMsg = "set task music paths failed";
+                return false;
+            }
+        }
+
+        if (subImgJson != null && subImgJson.length() > 0) {
+            boolean set = engine.setRenderProcessDynamicSubFiles(renderId, subImgJson);
+            if (!set) {
+                errorMsg = "set task text paths failed";
                 return false;
             }
         }

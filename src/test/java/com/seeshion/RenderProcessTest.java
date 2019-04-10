@@ -1,11 +1,15 @@
 package com.seeshion;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.seeshion.exceptions.InvalidLicenseException;
 import com.seeshion.exceptions.NotSupportedTemplateException;
 import com.seeshion.exceptions.RenderException;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class RenderProcessTest {
@@ -27,6 +31,96 @@ public class RenderProcessTest {
     }
 
     private  String license = "zPfg3zBjSVGqn/8GdXrN5dAtMFHUvDQEMBCFWAajVjtxkSA4mi8fQu9EtNHxE+G5zVqFOlZzTbJWTwhVFbtmWq8eti9sR2Pe8KO3TubpiWpZSXPGFBu6+suQYYlt/RFhNFc5am/3roENVzrWckuZIBg8pwbFjdzXt6bBJBPg93WVbVu8QETjQc9z2XBw+02LXB29PLg1xsclDi8nhQOB6oI8Iu2Z+Oh8HdWcS+j0BYKECHjvmUCBaFaNJBty0UfVoX0pGtN9Uou0vrT3dyWKpZHs0IZD+WebN8pfFtGWWIDwGkrX0YjPNDx/cWLo6bNIdbTqonxx6rQJ5ymaMOTchipRS15htnrUrDf5P3Bi+w5ht6zD5pTw8sI9q1bTZC3E5tf9vZBnALluHuXc9NOKbA==";
+
+    public class DyamicSubFile {
+        @JSONField(name="img_path")
+        public String imgPath;
+        @JSONField(name="d_key_prefix")
+        public String dKeyPrefix;
+        @JSONField(name="d_img_paths")
+        public String[] dImgPaths;
+
+        public DyamicSubFile(String imgPath, String dKeyPrefix, String[] dImgPaths) {
+            this.imgPath = imgPath;
+            this.dKeyPrefix = dKeyPrefix;
+            this.dImgPaths = dImgPaths;
+        }
+    }
+
+    /**
+     * 测试动态模板设置文字头像 昵称
+     *
+     * */
+
+    @Test
+    public void testDynamic() {
+        File f = new File("");
+        String basePath = f.getAbsolutePath();
+
+        VideoEngine engine = new VideoEngine();
+
+        String tplFolder = basePath + "/workspace/template/dynamic_text";
+        String outputPath = basePath + "/workspace/output/dynamic.mp4";
+
+        String[] paths = {
+                basePath + "/workspace/assets/1.jpeg",
+                basePath + "/workspace/assets/2.jpeg",
+                basePath + "/workspace/assets/3.jpeg",
+                basePath + "/workspace/assets/4.jpeg",
+                basePath + "/workspace/assets/5.jpeg",
+        };
+
+        ArrayList<DyamicSubFile> subFiles = new ArrayList<>();
+        String[] subImgs = {
+                basePath + "/workspace/assets/235_41_text1.png"
+        };
+        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
+        String[] subImgs2 = {
+                basePath + "/workspace/assets/235_41_text2.png",
+                basePath + "/workspace/assets/235_41_text3.png",
+
+        };
+        String[] subImgs3 = {
+                basePath + "/workspace/assets/235_41_text4.png"
+
+        };
+        String[] subImgs4 = {
+                basePath + "/workspace/assets/235_41_text8.png"
+        };
+        String[] subImgs5 = {
+                basePath + "/workspace/assets/235_41_text9.png"
+        };
+
+        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
+        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/2.jpeg", "dtext", subImgs2));
+        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/3.jpeg", "dtext", subImgs3));
+        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/4.jpeg", "dtext", subImgs4));
+        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/4.jpeg", "dsubimg", subImgs5));
+
+
+
+
+
+        String musicPath = basePath + "/workspace/music.mp3";
+        VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+        task.setAssetPaths(paths);
+        task.setDynamicSubFiles(JSON.toJSONString(subFiles));
+        task.setMusicPath(musicPath, true);
+        task.setMusicLoop(false);
+        System.out.println(task.getLicenseProfile());
+
+        try {
+            boolean ret = task.render();
+        } catch (InvalidLicenseException e) {
+            e.printStackTrace();
+        } catch (RenderException e) {
+            e.printStackTrace();
+        } catch (NotSupportedTemplateException e) {
+            e.printStackTrace();
+        } finally {
+            task.destroy();
+        }
+    }
 
 
     /**

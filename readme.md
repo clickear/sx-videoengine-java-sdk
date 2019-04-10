@@ -26,3 +26,5 @@
 + 运行的时候需要指定　-Djava.library.path 到lib 目录
 
 + "edit Configuraions" 增加　junit 的运行配置，在　VM Options 增加　-Djava.library.path=./lib　
+
+

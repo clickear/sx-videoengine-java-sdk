@@ -1,5 +1,8 @@
 ve-java-sdk 
 
+### version 1.2
++ 增加 setDynamicSubFiles 方法,为动态模板设置相关子素材
+
 ### version 1.1
 + 重构进程渲染接口
     |- 增加 VeProcessRenderTask

@@ -17,6 +17,7 @@ public class VideoEngine {
     private native String nRenderProcessLicenseProfile(String id);
     private native boolean nRenderProcessLicenseIsValid(String id);
     private native int nRenderProcessSetReplaceableFiles(String id, String[] paths);
+    private native int nRenderProcessSetDynamicSubFiles(String id, String json);
     private native int nRenderProcessSetMusicFile(String id, String musicPath, boolean loop);
     private native int nRenderProcessSetMusicLoop(String id, boolean loop);
     private native int nRenderProcessStart(String id)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
@@ -106,6 +107,19 @@ public class VideoEngine {
         return nRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
     }
 
+    /**
+     * 为动态模板设置关联的子素材
+     *
+     * @note 非动态模板设置无效
+     *
+     * @param id, render id
+     * @param json, 素材数组
+     * @return boolean
+     *
+     * */
+    public boolean setRenderProcessDynamicSubFiles(String id, String json) {
+        return nRenderProcessSetDynamicSubFiles(id, json) == 0 ? true : false;
+    }
 
     /**
      * 设置音乐
