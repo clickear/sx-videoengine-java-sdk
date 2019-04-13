@@ -48,7 +48,12 @@ public class RenderProcessTest {
     }
 
     /**
-     * 测试动态模板设置文字头像 昵称
+     * 测试动态模板设置附加的文字头像 昵称
+     *
+     * 附加素材动态模板测试
+     *
+     * dynamic_text
+     *
      *
      * */
 
@@ -70,6 +75,7 @@ public class RenderProcessTest {
                 basePath + "/workspace/assets/5.jpeg",
         };
 
+        // 给素材绑定关联的子素材
         ArrayList<DyamicSubFile> subFiles = new ArrayList<>();
         String[] subImgs = {
                 basePath + "/workspace/assets/235_41_text1.png"
@@ -85,10 +91,10 @@ public class RenderProcessTest {
 
         };
         String[] subImgs4 = {
-                basePath + "/workspace/assets/235_41_text8.png"
+                basePath + "/workspace/assets/235_41_text8.png" // 昵称
         };
         String[] subImgs5 = {
-                basePath + "/workspace/assets/235_41_text9.png"
+                basePath + "/workspace/assets/235_41_text9.png" // 头像
         };
 
         subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
@@ -98,13 +104,14 @@ public class RenderProcessTest {
         subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/4.jpeg", "dsubimg", subImgs5));
 
 
-
+        String subFilesJson = JSON.toJSONString(subFiles);
+        System.out.println(subFilesJson);
 
 
         String musicPath = basePath + "/workspace/music.mp3";
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
         task.setAssetPaths(paths);
-        task.setDynamicSubFiles(JSON.toJSONString(subFiles));
+        task.setDynamicSubFiles(subFilesJson);
         task.setMusicPath(musicPath, true);
         task.setMusicLoop(false);
         System.out.println(task.getLicenseProfile());

@@ -92,7 +92,7 @@ public class VeProcessRenderTask {
     }
 
     /**
-     * 为动态模板设置子素材
+     * 为动态模板设置附加素材
      *
      * @note 非动态模板设置无效
      *
