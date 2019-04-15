@@ -1,4 +1,4 @@
-package com.seeshiontech.ve.sdk.exceptions;
+package com.seeshiontech.vesdk.exceptions;
 
 public class InvalidLicenseException extends Exception{
 
