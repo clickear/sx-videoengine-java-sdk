@@ -1,4 +1,6 @@
 ve-java-sdk 
+### version 1.3
++ 更改包名为 com.seeshiontech.ve.sdk
 
 ### version 1.2
 + 增加 setDynamicSubFiles 方法,为动态模板设置相关子素材
