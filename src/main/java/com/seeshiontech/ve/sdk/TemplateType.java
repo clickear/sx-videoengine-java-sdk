@@ -1,4 +1,4 @@
-package com.seeshion;
+package com.seeshiontech.ve.sdk;
 
 public enum TemplateType {
     NORMAL_TEMPLATE(1), ALBUM_TEMPLATE(2);

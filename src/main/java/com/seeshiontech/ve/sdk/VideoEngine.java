@@ -1,8 +1,8 @@
-package com.seeshion;
+package com.seeshiontech.ve.sdk;
 
-import com.seeshion.exceptions.InvalidLicenseException;
-import com.seeshion.exceptions.NotSupportedTemplateException;
-import com.seeshion.exceptions.RenderException;
+import com.seeshiontech.ve.sdk.exceptions.InvalidLicenseException;
+import com.seeshiontech.ve.sdk.exceptions.NotSupportedTemplateException;
+import com.seeshiontech.ve.sdk.exceptions.RenderException;
 
 public class VideoEngine {
 

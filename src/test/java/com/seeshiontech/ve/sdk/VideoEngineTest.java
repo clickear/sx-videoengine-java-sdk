@@ -1,15 +1,9 @@
-package com.seeshion;
+package com.seeshiontech.ve.sdk;
 
-import com.seeshion.exceptions.InvalidLicenseException;
-import com.seeshion.exceptions.NotSupportedTemplateException;
-import com.seeshion.exceptions.RenderException;
+import com.seeshiontech.ve.sdk.exceptions.InvalidLicenseException;
+import com.seeshiontech.ve.sdk.exceptions.NotSupportedTemplateException;
+import com.seeshiontech.ve.sdk.exceptions.RenderException;
 import org.junit.Test;
-import org.junit.experimental.theories.Theories;
-
-import java.io.File;
-import java.sql.Time;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 
 public class VideoEngineTest {

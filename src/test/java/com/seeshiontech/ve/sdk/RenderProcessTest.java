@@ -1,15 +1,14 @@
-package com.seeshion;
+package com.seeshiontech.ve.sdk;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.seeshion.exceptions.InvalidLicenseException;
-import com.seeshion.exceptions.NotSupportedTemplateException;
-import com.seeshion.exceptions.RenderException;
+import com.seeshiontech.ve.sdk.exceptions.InvalidLicenseException;
+import com.seeshiontech.ve.sdk.exceptions.NotSupportedTemplateException;
+import com.seeshiontech.ve.sdk.exceptions.RenderException;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class RenderProcessTest {
