@@ -1,4 +1,9 @@
 ve-java-sdk 
+
+### version 1.3.1
++ 修复渲染子进程非正常退出导致进程卡死的问题
+
+
 ### version 1.3
 + 更改包名为 com.seeshiontech.vesdk
 
