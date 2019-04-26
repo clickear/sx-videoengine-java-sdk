@@ -23,6 +23,7 @@ public class VideoEngine {
     private native int nRenderProcessStart(String id)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
     private native String nRenderProcessStatus(String id);
     private native void nRenderProcessRelease(String id);
+    private native int nRenderProcessSetBitrateControl(String id, float control);
 
     /**
      * 线程模式
@@ -174,6 +175,16 @@ public class VideoEngine {
         nRenderProcessRelease(id);
     }
 
+    /**
+     * 设置比特率控制参数
+     *
+     * @param id, render id
+     * @param control 0.0 - 1.0
+     * @return boolean
+     * */
+    public boolean setRenderProcessBitrateControl(String id, float control) {
+        return nRenderProcessSetBitrateControl(id, control) == 0 ? true : false;
+    }
 
 
 

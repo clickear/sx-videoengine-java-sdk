@@ -19,6 +19,7 @@ public class VeProcessRenderTask {
     private boolean initialized = false;
     private String musicPath;
     private boolean musicLoop = false;
+    private float bitrateControl = 0.25f;
     private String subImgJson;
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
@@ -91,6 +92,11 @@ public class VeProcessRenderTask {
         return true;
     }
 
+    public boolean setBitrateControl(float control) {
+        this.bitrateControl = control;
+        return true;
+    }
+
     /**
      * 为动态模板设置附加素材
      *
@@ -132,21 +138,30 @@ public class VeProcessRenderTask {
         }
 
 
-        boolean set = engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
+        boolean set = engine.setRenderProcessBitrateControl(renderId, this.bitrateControl);
+
+        set = engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
 
         boolean success = engine.startRenderProcess(renderId);
+
         if (!success)  {
             errorMsg = "start render process failed";
             return false;
         }
 
+
         String taskStatus = engine.getRenderProcessStatus(renderId);
         if (taskStatus.equals("end")) {
+            errorMsg = "task exit with status : " + taskStatus;
             return true;
         }
 
         errorMsg = "task exit with status : " + taskStatus;
         return false;
+    }
+
+    public String getTaskStatus() {
+        return engine != null ? engine.getRenderProcessStatus(renderId) : "";
     }
 
     public void destroy() {

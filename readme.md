@@ -5,9 +5,9 @@
 + 操作系统： ubuntu 16.04 64 位
 + 显卡 
 
-       nvidia 显卡建议 gtx1050 或以上
-       驱动 394.57  https://www.geforce.cn/drivers
-       cuda 9.0     https://developer.nvidia.com/cuda-toolkit-archive
+       nvidia        gtx1050 或以上
+       驱动    418  https://www.geforce.cn/drivers
+       cuda    10.0     https://developer.nvidia.com/cuda-toolkit-archive
        
 + opengl 
 + Java： jdk 11
@@ -45,7 +45,8 @@
 + 参考 RenderProcessTest 用例获取开发步骤
 
 
-### 运行方法
+### 运行
+
 
 + 运行的时候需要指定　-Djava.library.path 到lib 目录
 
