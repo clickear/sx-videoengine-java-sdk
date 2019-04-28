@@ -9,9 +9,17 @@
        驱动    418.30 or newer  https://www.geforce.cn/drivers
        cuda    10.0  or newer   https://developer.nvidia.com/cuda-toolkit-archive
        
-+ opengl 
++ opengl : 3.0 or newer 
 + Java： jdk 11
-+ ffmpeg 4.1   
++ ffmpeg : 4.1   
+
+### 注意事项
+
++ 使用 nvidia 显卡硬编码有显卡对同时编码的任务有数量限制
+    
+    参考 :  https://developer.nvidia.com/video-encode-decode-gpu-support-matrix#Encoder  
+    "Max # of concurrent sessions" 这一列展示了显卡最大编码会话数  
+    比如 gtx 1050　同时最大只支持两个编码任务, 所以在该显卡下最大只能开两个渲染进程
 
 ### sdk 目录结构
 
