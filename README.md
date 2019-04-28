@@ -5,9 +5,9 @@
 + 操作系统： ubuntu 16.04 64 位
 + 显卡 
 
-       nvidia        gtx1050 或以上
-       驱动    418  https://www.geforce.cn/drivers
-       cuda    10.0     https://developer.nvidia.com/cuda-toolkit-archive
+       nvidia  gtx1050 或以上
+       驱动    418.30 or newer  https://www.geforce.cn/drivers
+       cuda    10.0  or newer   https://developer.nvidia.com/cuda-toolkit-archive
        
 + opengl 
 + Java： jdk 11
