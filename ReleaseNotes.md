@@ -1,5 +1,9 @@
 ve-java-sdk 
 
+### v1.3.3 
++ 支持 3d 动画效果
++ 支持按图片尺寸比例缩放,并使用模糊效果填充空白部分
+
 ### version 1.3.2
 + 增加 setBitrateControl 设置比特率参数
 
