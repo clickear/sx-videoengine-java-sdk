@@ -21,6 +21,7 @@ public class VeProcessRenderTask {
     private boolean musicLoop = false;
     private float bitrateControl = 0.25f;
     private String subImgJson;
+    private String status = "";
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
         this.license = license;
@@ -52,6 +53,9 @@ public class VeProcessRenderTask {
     }
 
 
+    public String getStatus() {
+        return status;
+    }
 
     public boolean isMusicLoop() {
         return musicLoop;
@@ -150,19 +154,16 @@ public class VeProcessRenderTask {
         }
 
 
-        String taskStatus = engine.getRenderProcessStatus(renderId);
-        if (taskStatus.equals("end")) {
-            errorMsg = "task exit with status : " + taskStatus;
+        status = engine.getRenderProcessStatus(renderId);
+        if (status.equals("end")) {
+            errorMsg = "task exit with status : " + status;
             return true;
         }
 
-        errorMsg = "task exit with status : " + taskStatus;
+        errorMsg = "task exit with status : " + status;
         return false;
     }
 
-    public String getTaskStatus() {
-        return engine != null ? engine.getRenderProcessStatus(renderId) : "";
-    }
 
     public void destroy() {
        engine.destroyRenderProcess(renderId);
