@@ -39,7 +39,7 @@
 ### 使用步骤
 
 + 安装好相关驱动和环境
-+ 进入　local_dependency 执行　install_dependency.sh 安装第三方依赖库
++ 进入　lib 执行　install_lib.sh 安装第三方依赖库
 + 安装　ffmpeg
 
         apt-get -y install software-properties-common
@@ -47,10 +47,10 @@
         add-apt-repository ppa:jonathonf/ffmpeg-4
         apt-get update
         apt-get -y install ffmpeg
-    
-    
+
 + workspace 中有可供测试的模板,图片和音乐文件
 + 参考 RenderProcessTest 用例获取开发步骤
+
 
 
 ### 运行
