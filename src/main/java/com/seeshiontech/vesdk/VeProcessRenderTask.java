@@ -8,19 +8,87 @@ import java.util.Random;
 
 public class VeProcessRenderTask {
 
+    /**
+     * license
+     * */
     private String license;
+
+    /**
+     * 模板文件夹绝对路径
+     * */
     private String tplFolder;
+
+    /**
+     * 视频输出绝对路径, mp4 结尾
+     * */
     private String outputPath;
+
+    /**
+     * 替换素材, 绝对路径数组
+     * */
     private String[] assetPaths;
+
+    /**
+     * vengine 核心类
+     * */
     private VideoEngine engine;
+
+    /**
+     * 创建render时返回的 render id
+     * */
     private String renderId;
+
+    /**
+     * 错误信息
+     * */
     private String errorMsg = "";
+
+    /**
+     * 模板类型
+     *
+     * 普通模板
+     * 动态模板
+     *
+     * */
     private TemplateType templateType = TemplateType.NORMAL_TEMPLATE;
+
+    /**
+     * 是否已经初始化
+     * */
     private boolean initialized = false;
+
+    /**
+     * 音乐文件绝对路径
+     * */
     private String musicPath;
+
+    /**
+     * 是否开启音乐循环
+     * */
     private boolean musicLoop = false;
+
+    /**
+     * 视频比特率控制参数
+     *
+     * 范围:　0.0 - 1.0
+     **/
     private float bitrateControl = 0.25f;
+
+    /**
+     * 动态模板附加素材数据　json 字符串
+     * */
     private String subImgJson;
+
+    /**
+     * 渲染任务状态
+     *
+     * start   开始
+     * update　更新
+     * end　　 渲染完成
+     * fail　　渲染失败
+     * cancel　渲染被取消
+     * crash　 渲染崩溃
+     * */
     private String status = "";
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {

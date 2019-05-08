@@ -1,7 +1,6 @@
 package com.seeshiontech.vesdk;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.seeshiontech.vesdk.exceptions.InvalidLicenseException;
 import com.seeshiontech.vesdk.exceptions.NotSupportedTemplateException;
 import com.seeshiontech.vesdk.exceptions.RenderException;
@@ -13,51 +12,18 @@ import java.util.ArrayList;
 
 public class RenderProcessTest {
 
-    @Test
-    public  void test()  {
-        for (int idx = 0; idx < 6; ++idx) {
-            final int threadIdx = idx;
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    System.out.println("start " + threadIdx);
-                    testRenderProcess();
-                    System.out.println("end " + threadIdx);
-                }
-            }).start();
-        }
-    }
-
     // license expire at 2019-05-20
     private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzRw85LzYaSsniGRSqW5ZnWf2HZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndcfr/I4sBqgH+1b6HHsPMULVzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBsyQG1Uk6xS6cyXZVSfril1hldX4EWhjl7KxQkrTJWLI=";
-
-    public class DyamicSubFile {
-        @JSONField(name="img_path")
-        public String imgPath;
-        @JSONField(name="d_key_prefix")
-        public String dKeyPrefix;
-        @JSONField(name="d_img_paths")
-        public String[] dImgPaths;
-
-        public DyamicSubFile(String imgPath, String dKeyPrefix, String[] dImgPaths) {
-            this.imgPath = imgPath;
-            this.dKeyPrefix = dKeyPrefix;
-            this.dImgPaths = dImgPaths;
-        }
-    }
 
     /**
      * 测试动态模板设置附加的文字头像 昵称
      *
-     * 附加素材动态模板测试
-     *
+     * 附加素材动态模板:
      * dynamic_text
-     *
      * */
 
     @Test
-    public void testDynamic() {
+    public void testDynamicTempalte() {
         File f = new File("");
         String basePath = f.getAbsolutePath();
 
@@ -75,11 +41,11 @@ public class RenderProcessTest {
         };
 
         // 给素材绑定关联的子素材
-        ArrayList<DyamicSubFile> subFiles = new ArrayList<>();
+        ArrayList<DynamicSubFiles> subFiles = new ArrayList<>();
         String[] subImgs = {
                 basePath + "/workspace/assets/235_41_text1.png"
         };
-        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
         String[] subImgs2 = {
                 basePath + "/workspace/assets/235_41_text2.png",
                 basePath + "/workspace/assets/235_41_text3.png",
@@ -96,11 +62,11 @@ public class RenderProcessTest {
                 basePath + "/workspace/assets/235_41_text9.png" // 头像
         };
 
-        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
-        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/2.jpeg", "dtext", subImgs2));
-        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/3.jpeg", "dtext", subImgs3));
-        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/4.jpeg", "dtext", subImgs4));
-        subFiles.add(new DyamicSubFile(basePath + "/workspace/assets/4.jpeg", "dsubimg", subImgs5));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/2.jpeg", "dtext", subImgs2));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/3.jpeg", "dtext", subImgs3));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/4.jpeg", "dtext", subImgs4));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/4.jpeg", "dsubimg", subImgs5));
 
 
         String subFilesJson = JSON.toJSONString(subFiles);
@@ -130,15 +96,14 @@ public class RenderProcessTest {
 
 
     /**
-     * 进程模式渲染测试
+     *  渲染测试
      *
      * */
     @Test
-    public void testRenderProcess() {
+    public void testVeProcessRenderTask() {
+
         File f = new File("");
         String basePath = f.getAbsolutePath();
-
-        VideoEngine engine = new VideoEngine();
 
         /**
          * 常规模板测试
