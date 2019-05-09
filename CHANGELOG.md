@@ -1,4 +1,7 @@
 # VE 视频渲染引擎 java sdk
+### 1.3.7
++ 修复 ffmpeg stream copy 不能使用 filter_complex 
+
 ### 1.3.6 
 + 新增添加水印
 + 新增设置音乐淡出时间

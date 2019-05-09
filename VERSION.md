@@ -1,1 +1,1 @@
-sdk-version: 1.3.6
+sdk-version: 1.3.7
