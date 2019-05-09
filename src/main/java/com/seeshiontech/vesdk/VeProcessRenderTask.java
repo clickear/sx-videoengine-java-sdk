@@ -4,6 +4,8 @@ import com.seeshiontech.vesdk.exceptions.InvalidLicenseException;
 import com.seeshiontech.vesdk.exceptions.NotSupportedTemplateException;
 import com.seeshiontech.vesdk.exceptions.RenderException;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class VeProcessRenderTask {
@@ -67,6 +69,24 @@ public class VeProcessRenderTask {
      * */
     private boolean musicLoop = false;
 
+
+    /**
+     * 背景音乐淡出时间, 单位: 秒
+     *
+     * 在视频结束倒数多少时间开始淡出
+     * */
+    private int musicFadeoutDuration = 0;
+
+    /**
+     * 设置音量
+     *
+     * 最终音量为 : 原音量 * volume
+     *
+     * 比如 volume = 0.5, 则输出音量为原音量的一半
+     *
+     * */
+    private float musicVolume = 1.0f;
+
     /**
      * 视频比特率控制参数
      *
@@ -76,8 +96,15 @@ public class VeProcessRenderTask {
 
     /**
      * 动态模板附加素材数据　json 字符串
+     *
+     * @note 非动态模板设置无效
      * */
     private String subImgJson;
+
+    /**
+     * 水印
+     * */
+    private List<Watermark> watermarkList;
 
     /**
      * 渲染任务状态
@@ -169,12 +196,30 @@ public class VeProcessRenderTask {
         return true;
     }
 
-    /**
-     * 为动态模板设置附加素材
-     *
-     * @note 非动态模板设置无效
-     *
-     * */
+    public List<Watermark> getWatermarkList() {
+        return watermarkList;
+    }
+
+    public void setWatermarkList(List<Watermark> watermarkList) {
+        this.watermarkList = watermarkList;
+    }
+
+    public int getMusicFadeoutDuration() {
+        return musicFadeoutDuration;
+    }
+
+    public void setMusicFadeoutDuration(int musicFadeoutDuration) {
+        this.musicFadeoutDuration = musicFadeoutDuration;
+    }
+
+    public float getMusicVolume() {
+        return musicVolume;
+    }
+
+    public void setMusicVolume(float musicVolume) {
+        this.musicVolume = musicVolume;
+    }
+
     public boolean setDynamicSubFiles(String json) {
         this.subImgJson = json;
         return true;
@@ -186,7 +231,7 @@ public class VeProcessRenderTask {
             return false;
         }
         if (this.assetPaths != null && this.assetPaths.length > 0) {
-            boolean set = engine.setRenderProcessReplaceableFiles(renderId, this.assetPaths);
+            boolean set = engine.setRenderProcessReplaceableFiles(renderId, assetPaths);
             if (!set) {
                 errorMsg = "set task asset paths failed";
                 return false;
@@ -194,11 +239,14 @@ public class VeProcessRenderTask {
         }
 
         if (this.musicPath != null && this.musicPath.length() > 0) {
-            boolean set = engine.setRenderProcessMusicFile(renderId, this.musicPath, this.musicLoop);
+            boolean set = engine.setRenderProcessMusicFile(renderId, musicPath, musicLoop);
             if (!set) {
                 errorMsg = "set task music paths failed";
                 return false;
             }
+
+            engine.setRenderProcessMusicFadeoutDuration(renderId, musicFadeoutDuration);
+            engine.setRenderProcessMusicVolume(renderId, musicVolume);
         }
 
         if (subImgJson != null && subImgJson.length() > 0) {
@@ -209,10 +257,19 @@ public class VeProcessRenderTask {
             }
         }
 
+        if (watermarkList != null && watermarkList.size() > 0) {
+            Iterator<Watermark> it = watermarkList.iterator();
+            while(it.hasNext()) {
+                Watermark mark = it.next();
+                String[] paths = mark.getPaths().toArray(new String[mark.getPaths().size()]);
+                engine.addRenderProcessWatermark(renderId, paths, mark.getPosX(), mark.getPoxY(), mark.getTimeStart(), mark.getTimeEnd(), mark.getScaleX(), mark.getScaleY());
+            }
+        }
 
-        boolean set = engine.setRenderProcessBitrateControl(renderId, this.bitrateControl);
 
-        set = engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
+        boolean set = engine.setRenderProcessBitrateControl(renderId, bitrateControl);
+
+        engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
 
         boolean success = engine.startRenderProcess(renderId);
 

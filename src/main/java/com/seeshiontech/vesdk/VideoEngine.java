@@ -24,6 +24,9 @@ public class VideoEngine {
     private native String nRenderProcessStatus(String id);
     private native void nRenderProcessRelease(String id);
     private native int nRenderProcessSetBitrateControl(String id, float control);
+    private native int nRenderProcessSetMusicFadeoutDuration(String id, int duration);
+    private native int nRenderProcessSetMusicVolume(String id, float volume);
+    private native int nRenderProcessAddWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY);
 
     /**
      * 线程模式
@@ -143,6 +146,46 @@ public class VideoEngine {
      * */
     public boolean setRenderProcessMusicLoop(String id, boolean loop) {
         return nRenderProcessSetMusicLoop(id, loop) == 0 ? true : false;
+    }
+
+
+    /**
+     * 设置音乐淡出时间, 单位秒
+     *
+     * @param id, render id
+     * @param duration 淡出时间
+     * @return boolean
+     * */
+    public  boolean setRenderProcessMusicFadeoutDuration(String id, int duration) {
+        return nRenderProcessSetMusicFadeoutDuration(id, duration) == 0 ? true: false;
+    }
+
+    /**
+     * 设置音量控制参数
+     *
+     * @param id, render id
+     * @param volume
+     * @return boolean
+     * */
+    public boolean setRenderProcessMusicVolume(String id, float volume) {
+        return nRenderProcessSetMusicVolume(id, volume) == 0 ? true : false;
+    }
+
+    /**
+     * 添加水印
+     *
+     * @param id, render id
+     * @param paths
+     * @param posX 水印 x 坐标
+     * @param posY 水印 y 坐标
+     * @param timeStart 开始时间,单位秒
+     * @param timeEnd 结束时间,单位秒
+     * @param scaleX  x 轴缩放
+     * @param scaleY  y 轴缩放
+     * @return boolean
+     * */
+    public boolean addRenderProcessWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY) {
+        return nRenderProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY) == 0 ? true : false;
     }
 
     /**

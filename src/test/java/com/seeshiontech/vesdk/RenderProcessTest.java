@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RenderProcessTest {
@@ -73,13 +74,38 @@ public class RenderProcessTest {
         System.out.println(subFilesJson);
 
 
-        String musicPath = basePath + "/workspace/music.mp3";
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
         task.setAssetPaths(paths);
         task.setDynamicSubFiles(subFilesJson);
-        task.setMusicPath(musicPath, true);
-        task.setMusicLoop(false);
+
+
         System.out.println(task.getLicenseProfile());
+
+        // 设置音乐
+        String musicPath = basePath + "/workspace/music.mp3";
+        task.setMusicPath(musicPath, true);
+        task.setMusicLoop(true);
+        task.setMusicFadeoutDuration(5);
+        task.setMusicVolume(0.5f);
+
+
+        // 添加水印
+        List<Watermark> list = new ArrayList<>();
+        Watermark mark = new Watermark();
+        List<String> watermarkPaths = new ArrayList<>();
+        watermarkPaths.add(basePath + "/workspace/watermark.png");
+        mark.setPaths(watermarkPaths);
+
+        Watermark mark2 = new Watermark();
+        List<String> watermarkPaths2 = new ArrayList<>();
+        watermarkPaths2.add( basePath + "/workspace/watermark.png");
+        mark2.setPaths(watermarkPaths2);
+        mark2.setPosX(400);
+
+        list.add(mark);
+        list.add(mark2);
+
+        task.setWatermarkList(list);
 
         try {
             boolean ret = task.render();
