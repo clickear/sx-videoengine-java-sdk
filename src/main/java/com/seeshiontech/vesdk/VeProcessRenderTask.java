@@ -106,6 +106,22 @@ public class VeProcessRenderTask {
      * */
     private List<Watermark> watermarkList;
 
+
+    /**
+     * lua main 函数所在脚本文件
+     * */
+    private String scriptMainFile;
+
+    /**
+     * lua 脚本目录, 无传空字符串
+     * */
+    private String scriptDir = "";
+
+    /**
+     * lua 脚本数据
+     * */
+    private String scriptData = "";
+
     /**
      * 渲染任务状态
      *
@@ -266,6 +282,10 @@ public class VeProcessRenderTask {
             }
         }
 
+        if (scriptMainFile != null && scriptMainFile.length() > 0) {
+            engine.setRenderProcessScript(renderId, scriptMainFile, scriptDir, scriptData);
+        }
+
 
         boolean set = engine.setRenderProcessBitrateControl(renderId, bitrateControl);
 
@@ -294,4 +314,20 @@ public class VeProcessRenderTask {
        engine.destroyRenderProcess(renderId);
     }
 
+
+    public void setScriptDir(String scriptDir) {
+        this.scriptDir = scriptDir;
+    }
+
+    public void setScriptData(String scriptData) {
+        this.scriptData = scriptData;
+    }
+
+    public void setScriptMainFile(String scriptMainFile) {
+        this.scriptMainFile = scriptMainFile;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

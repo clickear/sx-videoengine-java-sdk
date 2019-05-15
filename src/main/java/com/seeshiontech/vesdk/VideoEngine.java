@@ -27,6 +27,7 @@ public class VideoEngine {
     private native int nRenderProcessSetMusicFadeoutDuration(String id, int duration);
     private native int nRenderProcessSetMusicVolume(String id, float volume);
     private native int nRenderProcessAddWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY);
+    private native int nRenderProcessSetScript(String id, String mainFilePath, String scriptDir, String scriptData);
 
     /**
      * 线程模式
@@ -229,6 +230,19 @@ public class VideoEngine {
         return nRenderProcessSetBitrateControl(id, control) == 0 ? true : false;
     }
 
+
+    /**
+     * 设置渲染任务 Lua 脚本
+     *
+     * @param id, render id
+     * @param mainFile lua main 函数所在文件路径
+     * @param scriptDir lua 文件查找目录, 没有传空字符串
+     * @param data 传给脚本的数据, 没有传空字符串
+     * @return boolean
+     * */
+    public boolean setRenderProcessScript(String id, String mainFile, String scriptDir, String data) {
+        return nRenderProcessSetScript(id, mainFile, scriptDir, data) == 0;
+    }
 
 
 
