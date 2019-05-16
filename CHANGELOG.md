@@ -1,4 +1,7 @@
 # VE 视频渲染引擎 java sdk
+### 1.3.8
++ 新增 lua 脚本设置函数
+
 ### 1.3.7
 + 修复 ffmpeg stream copy 不能使用 filter_complex 
 
