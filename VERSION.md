@@ -1,1 +1,1 @@
-sdk-version: 1.3.8
+sdk-version: 1.3.9
