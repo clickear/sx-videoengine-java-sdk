@@ -172,6 +172,9 @@ public class VeProcessRenderTask {
         return musicLoop;
     }
 
+    /**
+     * 设置音乐是否循环
+     * */
     public void setMusicLoop(boolean musicLoop) {
         this.musicLoop = musicLoop;
     }
@@ -180,10 +183,17 @@ public class VeProcessRenderTask {
         this.templateType = type;
     }
 
+    /**
+     * 检查 license 是否有效
+     * */
     public boolean isLicenseValid() {
         return engine.isRenderProcessLicenseValid(renderId);
     }
 
+    /**
+     * 获取 license 信息
+     *
+     * */
     public String getLicenseProfile() {
         if (!initialized){
             return "";
@@ -196,17 +206,28 @@ public class VeProcessRenderTask {
         return errorMsg;
     }
 
+    /**
+     * 设置替换素材路径
+     *
+     * */
     public boolean setAssetPaths(String[] paths) {
         this.assetPaths = paths;
         return true;
     }
 
+    /**
+     * 设置音乐文件
+     *
+     * */
     public boolean setMusicPath(String musicPath, boolean loopMusic) {
         this.musicPath = musicPath;
         this.musicLoop = loopMusic;
         return true;
     }
 
+    /**
+     * 设置视频比特率控制参数,默认 0.25
+     * */
     public boolean setBitrateControl(float control) {
         this.bitrateControl = control;
         return true;
@@ -216,6 +237,9 @@ public class VeProcessRenderTask {
         return watermarkList;
     }
 
+    /**
+     * 设置水印
+     * */
     public void setWatermarkList(List<Watermark> watermarkList) {
         this.watermarkList = watermarkList;
     }
@@ -224,6 +248,10 @@ public class VeProcessRenderTask {
         return musicFadeoutDuration;
     }
 
+    /**
+     * 设置淡出时间, 单位秒
+     *
+     * */
     public void setMusicFadeoutDuration(int musicFadeoutDuration) {
         this.musicFadeoutDuration = musicFadeoutDuration;
     }
@@ -232,15 +260,26 @@ public class VeProcessRenderTask {
         return musicVolume;
     }
 
+    /**
+     * 设置音量
+     *
+     * */
     public void setMusicVolume(float musicVolume) {
         this.musicVolume = musicVolume;
     }
 
+
+    /**
+     * 设置动态模板附加素材
+     * */
     public boolean setDynamicSubFiles(String json) {
         this.subImgJson = json;
         return true;
     }
 
+    /**
+     * 启动渲染
+     * */
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {
         if (!initialized) {
             errorMsg = "task not initialized";
@@ -310,19 +349,40 @@ public class VeProcessRenderTask {
     }
 
 
+    /**
+     * 获取渲染后的信息, 在 render() 后调用
+     *
+     * */
+    public String getTaskRenderedInfo() {
+        return engine != null ? engine.getRenderProcessRenderedInfo(renderId) : "";
+    }
+
+
+    /**
+     * 销毁渲染资源,必须调用
+     * */
     public void destroy() {
        engine.destroyRenderProcess(renderId);
     }
 
 
+    /**
+     * 设置脚本目录
+     * */
     public void setScriptDir(String scriptDir) {
         this.scriptDir = scriptDir;
     }
 
+    /**
+     * 设置脚本参数
+     * */
     public void setScriptData(String scriptData) {
         this.scriptData = scriptData;
     }
 
+    /**
+     * 设置脚本主文件路径
+     * */
     public void setScriptMainFile(String scriptMainFile) {
         this.scriptMainFile = scriptMainFile;
     }
