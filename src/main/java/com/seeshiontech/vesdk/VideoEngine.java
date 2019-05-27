@@ -7,7 +7,7 @@ import com.seeshiontech.vesdk.exceptions.RenderException;
 public class VideoEngine {
 
     /**
-     * 渲染 jni 接口
+     * 视频渲染 jni 接口
      * */
 
     private native String nCreateRenderProcess(String tplFolder, String outputPath, int key);
@@ -27,6 +27,7 @@ public class VideoEngine {
     private native int nRenderProcessAddWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY);
     private native int nRenderProcessSetScript(String id, String mainFilePath, String scriptDir, String scriptData);
     private native String nRenderProcessRenderedInfo(String id);
+
 
 
 
@@ -93,7 +94,7 @@ public class VideoEngine {
      *
      * */
     public boolean setRenderProcessReplaceableFiles(String id, String[] paths) {
-        return nRenderProcessSetReplaceableFiles(id, paths) == 0 ? true : false;
+        return nRenderProcessSetReplaceableFiles(id, paths) == 0;
     }
 
     /**
@@ -107,7 +108,7 @@ public class VideoEngine {
      *
      * */
     public boolean setRenderProcessDynamicSubFiles(String id, String json) {
-        return nRenderProcessSetDynamicSubFiles(id, json) == 0 ? true : false;
+        return nRenderProcessSetDynamicSubFiles(id, json) == 0;
     }
 
     /**
@@ -119,7 +120,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public boolean setRenderProcessMusicFile(String id, String musicPath, boolean loop) {
-        return nRenderProcessSetMusicFile(id, musicPath, loop) == 0 ? true : false;
+        return nRenderProcessSetMusicFile(id, musicPath, loop) == 0;
     }
 
     /**
@@ -130,7 +131,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public boolean setRenderProcessMusicLoop(String id, boolean loop) {
-        return nRenderProcessSetMusicLoop(id, loop) == 0 ? true : false;
+        return nRenderProcessSetMusicLoop(id, loop) == 0;
     }
 
 
@@ -142,7 +143,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public  boolean setRenderProcessMusicFadeoutDuration(String id, int duration) {
-        return nRenderProcessSetMusicFadeoutDuration(id, duration) == 0 ? true: false;
+        return nRenderProcessSetMusicFadeoutDuration(id, duration) == 0;
     }
 
     /**
@@ -153,7 +154,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public boolean setRenderProcessMusicVolume(String id, float volume) {
-        return nRenderProcessSetMusicVolume(id, volume) == 0 ? true : false;
+        return nRenderProcessSetMusicVolume(id, volume) == 0;
     }
 
     /**
@@ -170,7 +171,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public boolean addRenderProcessWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY) {
-        return nRenderProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY) == 0 ? true : false;
+        return nRenderProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY) == 0;
     }
 
     /**
@@ -180,7 +181,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public boolean startRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
-        return nRenderProcessStart(id) == 0 ? true : false;
+        return nRenderProcessStart(id) == 0;
     }
 
 
@@ -211,7 +212,7 @@ public class VideoEngine {
      * @return boolean
      * */
     public boolean setRenderProcessBitrateControl(String id, float control) {
-        return nRenderProcessSetBitrateControl(id, control) == 0 ? true : false;
+        return nRenderProcessSetBitrateControl(id, control) == 0;
     }
 
 
@@ -240,6 +241,120 @@ public class VideoEngine {
         return nRenderProcessRenderedInfo(id);
     }
 
+
+
+
+    /**
+     * 图片滤镜渲染 jni 接口
+     * */
+    private native String nCreateRenderImageProcess(String[] imagePaths, String outputPath);
+    private native boolean nRegisterRenderImageProcessLicense(String id, String licenseStr);
+    private native String nRenderImageProcessLicenseProfile(String id);
+    private native boolean nRenderImageProcessLicenseIsValid(String id);
+    private native int nRenderImageProcessAddFilter(String id, String filterPath);
+    private native int nRenderImageProcessStart(String id)throws InvalidLicenseException, NotSupportedTemplateException, RenderException;
+    private native void nRenderImageProcessRelease(String id);
+    private native int nRenderImageProcessAddWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY);
+
+
+    /**
+     * 创建图片进程模式渲染对象
+     *
+     * @param imagePaths, 图片路径数组
+     * @param outputPath, 输出路径
+     * @return string render id
+     * */
+    public String createRenderImageProcess(String[] imagePaths, String outputPath) {
+        return nCreateRenderImageProcess(imagePaths, outputPath);
+    }
+
+
+    /**
+     * 销毁渲染对象
+     *
+     * @param id, render id
+     * */
+    public void destroyRenderImageProcess(String id) {
+        nRenderImageProcessRelease(id);
+    }
+
+
+    /**
+     * 注册 license
+     *
+     * @param id, render id
+     * @param licenseStr, 证书字符串
+     * @return boolean
+     * */
+    public boolean registerRenderImageProcessLicense(String id, String licenseStr) {
+        return nRegisterRenderImageProcessLicense(id, licenseStr);
+    }
+
+
+    /**
+     * 获取 License profile
+     *
+     * @param id render id
+     * @return String
+     * */
+    public String getRenderImageProcessLicenseProfile(String id) {
+        return nRenderImageProcessLicenseProfile(id);
+    }
+
+
+    /**
+     * 检测注册的 License 是否有效
+     *
+     * @param id, render id
+     * @return boolean
+     * */
+    public boolean isRenderImageProcessLicenseValid(String id) {
+        return nRenderImageProcessLicenseIsValid(id);
+    }
+
+
+    /**
+     * 启动渲染
+     *
+     * @param id, render id
+     * @return boolean
+     * */
+    public boolean startRenderImageProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
+        return nRenderImageProcessStart(id) == 0;
+    }
+
+
+
+    /**
+     * 添加水印
+     *
+     * @param id, render id
+     * @param paths
+     * @param posX 水印 x 坐标
+     * @param posY 水印 y 坐标
+     * @param timeStart 开始时间,单位秒
+     * @param timeEnd 结束时间,单位秒
+     * @param scaleX  x 轴缩放
+     * @param scaleY  y 轴缩放
+     * @return boolean
+     * */
+    public boolean addRenderImageProcessWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY) {
+        return nRenderImageProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY) == 0 ? true : false;
+    }
+
+
+
+    /**
+     * 添加滤镜
+     *
+     * @param id, render id
+     * @param filterPath, 滤镜路径
+     * @return boolean
+     *
+     * */
+    public boolean addRenderImageProcessFilter(String id, String filterPath) {
+       return nRenderImageProcessAddFilter(id, filterPath) == 0;
+    }
 
 
     static {

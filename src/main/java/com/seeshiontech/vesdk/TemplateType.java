@@ -1,7 +1,7 @@
 package com.seeshiontech.vesdk;
 
 public enum TemplateType {
-    NORMAL_TEMPLATE(1), DYNAMIC_TEMPLATE(2);
+    NORMAL_TEMPLATE(1), DYNAMIC_TEMPLATE(2), FILTER(4), CUSTOM(8), IMAGE_FILTER(16);
 
     private  int value;
 
