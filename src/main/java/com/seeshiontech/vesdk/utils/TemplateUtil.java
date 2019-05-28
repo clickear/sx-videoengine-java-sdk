@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.seeshiontech.vesdk.TemplateType;
-import javafx.util.Pair;
 
 import java.util.*;
 
@@ -117,7 +116,7 @@ public class TemplateUtil {
 
 
         // dynamic template
-        HashMap<String, Pair<Integer, Integer>> offsetMap = new HashMap<>();
+        HashMap<String, Entry<Integer, Integer>> offsetMap = new HashMap<>();
         JSONObject offsets = config.getJSONObject("offsets");
         Set<String> offsetKeySet = offsets.keySet();
         Iterator<String> ite = offsetKeySet.iterator();
@@ -133,7 +132,7 @@ public class TemplateUtil {
                 offset = value.getInteger("time");
             }
 
-            Pair<Integer, Integer> p = new Pair<>(style, offset);
+            Entry<Integer, Integer> p = new Entry<>(style, offset);
             offsetMap.put(key, p);
         }
 
@@ -166,7 +165,7 @@ public class TemplateUtil {
 
             if (key.equals("entrance")) {
                 entranceComp = compResolve(config.getJSONObject(key));
-                Pair<Integer, Integer> offset = offsetMap.get(entranceComp.name);
+                Entry<Integer, Integer> offset = offsetMap.get(entranceComp.name);
                 if (offset != null) {
                    entranceComp.offsetStyle = offset.getKey();
                    entranceComp.offset = offset.getValue();
@@ -176,7 +175,7 @@ public class TemplateUtil {
 
             if (key.equals("exit")) {
                 exitComp = compResolve(config.getJSONObject(key));
-                Pair<Integer, Integer> offset = offsetMap.get(exitComp.name);
+                Entry<Integer, Integer> offset = offsetMap.get(exitComp.name);
                 if (offset != null) {
                     exitComp.offsetStyle = offset.getKey();
                     exitComp.offset = offset.getValue();
@@ -214,7 +213,7 @@ public class TemplateUtil {
                 while(sourcesIte.hasNext()) {
                     JSONObject source = (JSONObject) sourcesIte.next();
                     CompData compData = compResolve(source);
-                    Pair<Integer, Integer> offset = offsetMap.get(compData.name);
+                    Entry<Integer, Integer> offset = offsetMap.get(compData.name);
                     if (offset != null) {
                         compData.offsetStyle = offset.getKey();
                         compData.offset = offset.getValue();
