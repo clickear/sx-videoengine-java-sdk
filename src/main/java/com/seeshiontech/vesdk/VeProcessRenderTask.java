@@ -102,6 +102,30 @@ public class VeProcessRenderTask {
     private String subImgJson;
 
     /**
+     * 动态模板附加文字数据, json 字符串
+     *
+     * */
+    private String subTextJson;
+
+
+    /**
+     * 引擎素材目录存放路径
+     *
+     * @note 文字绘制生成的图片将会保存到该目录, 该目录需要调用方进行清理工作
+     *
+     * */
+    private String assetPath;
+
+
+    /**
+     * 文字绘制工具目录
+     *
+     * @note 如果要时候用文字绘制功能,必须设置
+     *
+     * */
+    private String textPainterPath;
+
+    /**
      * 水印
      * */
     private List<Watermark> watermarkList;
@@ -174,14 +198,23 @@ public class VeProcessRenderTask {
 
     /**
      * 设置音乐是否循环
+     *
+     * @param musicLoop
      * */
     public void setMusicLoop(boolean musicLoop) {
         this.musicLoop = musicLoop;
     }
 
+
+    /**
+     * 设置模板类型
+     *
+     * @param type
+     * */
     public void setTemplateType(TemplateType type) {
         this.templateType = type;
     }
+
 
     /**
      * 检查 license 是否有效
@@ -189,6 +222,7 @@ public class VeProcessRenderTask {
     public boolean isLicenseValid() {
         return engine.isRenderProcessLicenseValid(renderId);
     }
+
 
     /**
      * 获取 license 信息
@@ -202,36 +236,48 @@ public class VeProcessRenderTask {
         return engine.getRenderProcessLicenseProfile(renderId);
     }
 
+
+    /**
+     * 获取渲染错误信息
+     *
+     * */
     public String getErrorMsg() {
         return errorMsg;
     }
 
+
     /**
      * 设置替换素材路径
      *
+     * @param paths
      * */
-    public boolean setAssetPaths(String[] paths) {
+    public void setAssetPaths(String[] paths) {
         this.assetPaths = paths;
-        return true;
     }
+
 
     /**
      * 设置音乐文件
      *
+     * @param musicPath
+     * @param loopMusic
+     *
      * */
-    public boolean setMusicPath(String musicPath, boolean loopMusic) {
+    public void  setMusicPath(String musicPath, boolean loopMusic) {
         this.musicPath = musicPath;
         this.musicLoop = loopMusic;
-        return true;
     }
+
 
     /**
      * 设置视频比特率控制参数,默认 0.25
+     *
+     * @param control
      * */
-    public boolean setBitrateControl(float control) {
+    public void setBitrateControl(float control) {
         this.bitrateControl = control;
-        return true;
     }
+
 
     public List<Watermark> getWatermarkList() {
         return watermarkList;
@@ -239,6 +285,9 @@ public class VeProcessRenderTask {
 
     /**
      * 设置水印
+     *
+     * @param watermarkList
+     *
      * */
     public void setWatermarkList(List<Watermark> watermarkList) {
         this.watermarkList = watermarkList;
@@ -250,6 +299,8 @@ public class VeProcessRenderTask {
 
     /**
      * 设置淡出时间, 单位秒
+     *
+     * @param musicFadeoutDuration
      *
      * */
     public void setMusicFadeoutDuration(int musicFadeoutDuration) {
@@ -263,6 +314,9 @@ public class VeProcessRenderTask {
     /**
      * 设置音量
      *
+     * 0 - 1.0, 输出音量为原音量 * musicVolume
+     *
+     * @param musicVolume
      * */
     public void setMusicVolume(float musicVolume) {
         this.musicVolume = musicVolume;
@@ -271,10 +325,50 @@ public class VeProcessRenderTask {
 
     /**
      * 设置动态模板附加素材
+     *
+     * @param  json, 附加素材数据, json 字符串
      * */
-    public boolean setDynamicSubFiles(String json) {
+    public void setDynamicSubFiles(String json) {
         this.subImgJson = json;
-        return true;
+    }
+
+
+    /**
+     * 为动态模板设置关联的附加文字
+     *
+     * @note 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path
+     *
+     * @note 非动态模板设置无效
+     *
+     * @param subTextJson, 文字素材数组
+     * */
+    public void setDynamicSubTexts(String subTextJson) {
+        this.subTextJson = subTextJson;
+    }
+
+    /**
+     * 设置引擎生成的素材存放目录,
+     *
+     * @note TextPainter 绘制的文字图片会被放到设置的目录, 引擎不会对该目录执行清理动作,
+     *      需要调用方在渲染完成后,删除该目录进行清理
+     * @note 由于生成的素材可能与别的任务重名,所以建议每个任务使用单独的素材目录
+     *
+     * @param assetPath, 素材存放目录
+     * */
+    public void setAssetDir(String assetPath) {
+        this.assetPath = assetPath;
+    }
+
+
+    /**
+     * 设置文字绘制工具目录
+     *
+     * @note 引擎将使用该目录的 TextPainter 和 font_list.json 进行文字绘制
+     *
+     * @param textPainterPath, 文字绘制工具目录
+     * */
+    public void setTextPainterDir(String textPainterPath) {
+        this.textPainterPath = textPainterPath;
     }
 
     /**
@@ -325,6 +419,17 @@ public class VeProcessRenderTask {
             engine.setRenderProcessScript(renderId, scriptMainFile, scriptDir, scriptData);
         }
 
+        if (assetPath != null) {
+            engine.setRenderProcessAssetPath(renderId, assetPath);
+        }
+
+        if (subTextJson != null) {
+            engine.setRenderProcessDynamicSubTexts(renderId, subTextJson);
+        }
+
+        if (textPainterPath != null) {
+            engine.setRenderProcessTextPainterPath(renderId, textPainterPath);
+        }
 
         boolean set = engine.setRenderProcessBitrateControl(renderId, bitrateControl);
 
@@ -368,6 +473,8 @@ public class VeProcessRenderTask {
 
     /**
      * 设置脚本目录
+     *
+     * @param scriptDir
      * */
     public void setScriptDir(String scriptDir) {
         this.scriptDir = scriptDir;
@@ -375,6 +482,8 @@ public class VeProcessRenderTask {
 
     /**
      * 设置脚本参数
+     *
+     * @param scriptData
      * */
     public void setScriptData(String scriptData) {
         this.scriptData = scriptData;
@@ -382,12 +491,10 @@ public class VeProcessRenderTask {
 
     /**
      * 设置脚本主文件路径
+     *
+     * @param  scriptMainFile
      * */
     public void setScriptMainFile(String scriptMainFile) {
         this.scriptMainFile = scriptMainFile;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

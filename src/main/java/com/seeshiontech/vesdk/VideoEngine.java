@@ -27,6 +27,9 @@ public class VideoEngine {
     private native int nRenderProcessAddWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY);
     private native int nRenderProcessSetScript(String id, String mainFilePath, String scriptDir, String scriptData);
     private native String nRenderProcessRenderedInfo(String id);
+    private native int nRenderProcessSetDynamicSubTexts(String id, String json);
+    private native int nRenderProcessSetAssetPath(String id, String path);
+    private native int nRenderProcessSetTextPainterPath(String id, String path);
 
 
 
@@ -86,7 +89,7 @@ public class VideoEngine {
 
 
     /**
-     * 设置素材
+     * 设置主替换素材
      *
      * @param id, render id
      * @param paths, 素材数组
@@ -109,6 +112,56 @@ public class VideoEngine {
      * */
     public boolean setRenderProcessDynamicSubFiles(String id, String json) {
         return nRenderProcessSetDynamicSubFiles(id, json) == 0;
+    }
+
+
+    /**
+     * 为动态模板设置关联的附加文字
+     *
+     * @note 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path
+     *
+     * @note 非动态模板设置无效
+     *
+     * @param id, render id
+     * @param json, 文字素材数组
+     * @return boolean
+     *
+     * */
+    public boolean setRenderProcessDynamicSubTexts(String id, String json) {
+        return nRenderProcessSetDynamicSubTexts(id, json) == 0;
+    }
+
+
+    /**
+     * 设置引擎生成的素材存放目录,
+     *
+     * @note TextPainter 绘制的文字图片会被放到设置的目录, 引擎不会对该目录执行清理动作,
+     *      需要调用方在渲染完成后,删除该目录进行清理
+     * @note 由于生成的素材可能与别的任务重名,所以建议每个任务使用单独的素材目录
+     *
+     * @param id, render id
+     * @param path, 素材存放目录
+     * @return boolean
+     *
+     * */
+    public boolean setRenderProcessAssetPath(String id, String path) {
+        return nRenderProcessSetAssetPath(id, path) == 0;
+    }
+
+
+
+    /**
+     * 设置文字绘制工具目录
+     *
+     * @note 引擎将使用该目录的 TextPainter 和 font_list.json 进行文字绘制
+     *
+     * @param id, render id
+     * @param path, 文字绘制工具目录
+     * @return boolean
+     *
+     * */
+    public boolean setRenderProcessTextPainterPath(String id, String path) {
+        return nRenderProcessSetTextPainterPath(id, path) == 0;
     }
 
     /**
@@ -270,7 +323,7 @@ public class VideoEngine {
 
 
     /**
-     * 销毁渲染对象
+     * 销毁图片渲染对象
      *
      * @param id, render id
      * */
@@ -280,7 +333,7 @@ public class VideoEngine {
 
 
     /**
-     * 注册 license
+     * 注册图片渲染 license
      *
      * @param id, render id
      * @param licenseStr, 证书字符串
@@ -292,7 +345,7 @@ public class VideoEngine {
 
 
     /**
-     * 获取 License profile
+     * 获取图片渲染 License profile
      *
      * @param id render id
      * @return String
@@ -303,7 +356,7 @@ public class VideoEngine {
 
 
     /**
-     * 检测注册的 License 是否有效
+     * 检测图片渲染 License 是否有效
      *
      * @param id, render id
      * @return boolean
@@ -314,7 +367,7 @@ public class VideoEngine {
 
 
     /**
-     * 启动渲染
+     * 启动图片渲染
      *
      * @param id, render id
      * @return boolean
@@ -326,7 +379,7 @@ public class VideoEngine {
 
 
     /**
-     * 添加水印
+     * 添加图片渲染水印
      *
      * @param id, render id
      * @param paths
@@ -345,7 +398,7 @@ public class VideoEngine {
 
 
     /**
-     * 添加滤镜
+     * 添加图片渲染滤镜
      *
      * @param id, render id
      * @param filterPath, 滤镜路径
