@@ -118,7 +118,7 @@ public class VideoEngine {
     /**
      * 为动态模板设置关联的附加文字
      *
-     * @note 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path
+     * @note 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpainter path
      *
      * @note 非动态模板设置无效
      *
