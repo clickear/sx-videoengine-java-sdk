@@ -29,17 +29,15 @@ public class DynamicTest {
 
         VideoEngine engine = new VideoEngine();
 
-//        String tplFolder = basePath + "/workspace/template/kenbentuya/";
-//        String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
-        String tplFolder = basePath + "/workspace/template/shuimo_4/";
-        String outputPath = basePath + "/workspace/output/shuimo.mp4";
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
 
         String[] paths = {
                 basePath + "/workspace/assets/1.jpeg",
                 basePath + "/workspace/assets/2.jpeg",
-//                basePath + "/workspace/assets/3.jpeg",
-//                basePath + "/workspace/assets/4.jpeg",
-//                basePath + "/workspace/assets/5.jpeg",
+                basePath + "/workspace/assets/3.jpeg",
+                basePath + "/workspace/assets/4.jpeg",
+                basePath + "/workspace/assets/5.jpeg",
         };
 
         // 给素材绑定关联的文字
@@ -48,11 +46,9 @@ public class DynamicTest {
 
         // 按照 ui_key = avatar 精确替换头像
         String[] title = {"标题"};
-        String[] name = {"昵称"};
         String[] text1 = {"描述"};
 
-//        subTexts.add(new DynamicSubTexts("", "creator_title", title));
-        subTexts.add(new DynamicSubTexts("", "creator_name", name));
+        subTexts.add(new DynamicSubTexts("", "title", title));
         subTexts.add(new DynamicSubTexts( basePath + "/workspace/assets/1.jpeg", "dtext", text1));
 
         String subTextJson = JSON.toJSONString(subTexts);
