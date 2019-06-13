@@ -146,6 +146,17 @@ public class VeProcessRenderTask {
      * */
     private String scriptData = "";
 
+
+    /**
+     * 快照目录
+     * */
+    private String snapShotPath;
+
+    /**
+     * 快照帧索引
+     * */
+    private int[] snapShotFrames;
+
     /**
      * 渲染任务状态
      *
@@ -431,6 +442,11 @@ public class VeProcessRenderTask {
             engine.setRenderProcessTextPainterPath(renderId, textPainterPath);
         }
 
+        if (snapShotPath!= null && snapShotFrames != null && !snapShotPath.isEmpty() && snapShotFrames.length > 0 ) {
+            engine.setRenderProcessSnapShotPath(renderId, snapShotPath);
+            engine.setRenderProcessSnapShotFrames(renderId, snapShotFrames);
+        }
+
         boolean set = engine.setRenderProcessBitrateControl(renderId, bitrateControl);
 
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
@@ -496,5 +512,27 @@ public class VeProcessRenderTask {
      * */
     public void setScriptMainFile(String scriptMainFile) {
         this.scriptMainFile = scriptMainFile;
+    }
+
+
+    /**
+     * 设置快照保存目录
+     *
+     * @param snapShotPath, 目录
+     * */
+    public void setSnapShotPath(String snapShotPath) {
+        this.snapShotPath = snapShotPath;
+    }
+
+
+    /**
+     * 设置快照帧索引
+     *
+     * [1, 100] 表示第1, 100 帧会被生成 1.png , 100.png 到 snapshot path 目录中
+     *
+     * @param snapShotFrames, 帧数组
+     * */
+    public void setSnapShotFrames(int[] snapShotFrames) {
+        this.snapShotFrames = snapShotFrames;
     }
 }
