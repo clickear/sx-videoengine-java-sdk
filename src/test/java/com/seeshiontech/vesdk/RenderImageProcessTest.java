@@ -9,6 +9,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 图片滤镜测试
+ *
+ * @author  dongyado
+ * */
+
 
 public class RenderImageProcessTest {
 

@@ -9,12 +9,15 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class UtilTest {
+/**
+ * 工具类测试
+ * */
 
+
+public class UtilTest {
 
     /**
      * 根据模板和素材数量获取视频时长
-     *
      * */
     @Test
     public void testDynamicDuration() {
