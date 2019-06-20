@@ -31,7 +31,7 @@ public class DynamicSubAssetTest {
         String basePath = f.getAbsolutePath();
 
         String tplFolder = basePath + "/workspace/template/kenbentuya/";
-        String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
+        String outputPath = basePath + "/workspace/output/kenbentuya_text.mp4";
 
         String[] paths = {
                 basePath + "/workspace/assets/1.jpeg",
@@ -47,12 +47,22 @@ public class DynamicSubAssetTest {
 
         // 按照 ui_key = avatar 精确替换头像
         String[] title = {"标题"};
-        String[] text1 = {"描述"};
+        String[] text1 = {"描述1"};
+        String[] text2 = {"描述2"};
+        String[] text3 = {"描述3"};
+        String[] text4 = {"描述4"};
+        String[] text5 = {"描述5"};
 
         subTexts.add(new DynamicSubTexts("", "title", title));
         subTexts.add(new DynamicSubTexts( basePath + "/workspace/assets/1.jpeg", "dtext", text1));
+        subTexts.add(new DynamicSubTexts( basePath + "/workspace/assets/2.jpeg", "dtext", text2));
+        subTexts.add(new DynamicSubTexts( basePath + "/workspace/assets/3.jpeg", "dtext", text3));
+        subTexts.add(new DynamicSubTexts( basePath + "/workspace/assets/4.jpeg", "dtext", text4));
+        subTexts.add(new DynamicSubTexts( basePath + "/workspace/assets/5.jpeg", "dtext", text5));
 
         String subTextJson = JSON.toJSONString(subTexts);
+
+        System.out.println(subTextJson);
 
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
 
@@ -94,8 +104,8 @@ public class DynamicSubAssetTest {
 
         VideoEngine engine = new VideoEngine();
 
-        String tplFolder = basePath + "/workspace/template/dynamic_text";
-        String outputPath = basePath + "/workspace/output/dynamic.mp4";
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya_img.mp4";
 
         String[] paths = {
                 basePath + "/workspace/assets/1.jpeg",
@@ -107,10 +117,12 @@ public class DynamicSubAssetTest {
 
         // 给素材绑定关联的子素材
         ArrayList<DynamicSubFiles> subFiles = new ArrayList<>();
+        String[] title = {
+                basePath + "/workspace/assets/235_41_text8.png"
+        };
         String[] subImgs = {
                 basePath + "/workspace/assets/235_41_text1.png"
         };
-        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
         String[] subImgs2 = {
                 basePath + "/workspace/assets/235_41_text2.png",
                 basePath + "/workspace/assets/235_41_text3.png",
@@ -121,20 +133,23 @@ public class DynamicSubAssetTest {
 
         };
         String[] subImgs4 = {
-                basePath + "/workspace/assets/235_41_text8.png" // 昵称
+                basePath + "/workspace/assets/235_41_text5.png"
         };
         String[] subImgs5 = {
-                basePath + "/workspace/assets/235_41_text9.png" // 头像
+                basePath + "/workspace/assets/235_41_text6.png"
         };
 
+        subFiles.add(new DynamicSubFiles("", "title", title));
         subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/1.jpeg", "dtext", subImgs));
         subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/2.jpeg", "dtext", subImgs2));
         subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/3.jpeg", "dtext", subImgs3));
         subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/4.jpeg", "dtext", subImgs4));
-        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/4.jpeg", "dsubimg", subImgs5));
+        subFiles.add(new DynamicSubFiles(basePath + "/workspace/assets/5.jpeg", "dtext", subImgs5));
 
 
         String subFilesJson = JSON.toJSONString(subFiles);
+
+        System.out.println(JSON.toJSONString(paths));
         System.out.println(subFilesJson);
 
 

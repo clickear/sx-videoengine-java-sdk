@@ -301,6 +301,8 @@ public class TemplateUtil {
     /**
      * 根据素材数目计算视频时长
      *
+     * 单位: 秒
+     *
      * */
     public float getDurationWithFileNum(int num) {
 

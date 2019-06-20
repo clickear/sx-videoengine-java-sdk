@@ -36,17 +36,9 @@ public class RenderProcessTest {
          * 普通模板测试
          *
          * Calorie
-         * Flash
          * Screen
          *
          * */
-/*        String tplFolder = basePath + "/workspace/template/Flash";
-        String outputPath = basePath + "/workspace/output/flash.mp4";
-
-        String[] paths = {
-                "",
-                basePath + "/workspace/544x960.test0.png"
-        };*/
 
 
 /*        String tplFolder = basePath + "/workspace/template/Calorie";
@@ -68,6 +60,7 @@ public class RenderProcessTest {
          * 动态模板测试
          * ChineseStyle
          * Simple
+         * dynamic_text
          * kenbentuya
          * */
 
@@ -85,12 +78,8 @@ public class RenderProcessTest {
         };
 
 
-        String musicPath = basePath + "/workspace/music.mp3";
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
         task.setAssetPaths(paths);
-        task.setMusicPath(musicPath, true);
-        task.setMusicLoop(false);
-        System.out.println(task.getLicenseProfile());
 
         try {
             boolean ret = task.render();
@@ -138,9 +127,9 @@ public class RenderProcessTest {
         // 设置音乐
         String musicPath = basePath + "/workspace/music.mp3";
         task.setMusicPath(musicPath, true);
-        task.setMusicLoop(true);
+//        task.setMusicLoop(true);
         task.setMusicFadeoutDuration(5);
-        task.setMusicVolume(0.5f);
+        task.setMusicVolume(1.0f);
 
 
         // 添加水印
