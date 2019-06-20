@@ -107,8 +107,6 @@ public class RenderProcessTest {
         File f = new File("");
         String basePath = f.getAbsolutePath();
 
-        VideoEngine engine = new VideoEngine();
-
         String tplFolder = basePath + "/workspace/template/dynamic_text";
         String outputPath = basePath + "/workspace/output/dynamic.mp4";
 
