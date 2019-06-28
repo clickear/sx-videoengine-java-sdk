@@ -3,6 +3,7 @@ package com.seeshiontech.vesdk;
 import com.seeshiontech.vesdk.exceptions.InvalidLicenseException;
 import com.seeshiontech.vesdk.exceptions.NotSupportedTemplateException;
 import com.seeshiontech.vesdk.exceptions.RenderException;
+import javafx.util.Pair;
 
 import java.util.Iterator;
 import java.util.List;
@@ -534,5 +535,20 @@ public class VeProcessRenderTask {
      * */
     public void setSnapShotFrames(int[] snapShotFrames) {
         this.snapShotFrames = snapShotFrames;
+    }
+
+
+    /**
+     * 获取渲染进度
+     *
+     * @return float, 进度
+     * */
+
+    public float getRenderProgress() {
+        if (initialized) {
+            return engine.getRenderProcessProgress(renderId);
+        }
+
+        return 0f;
     }
 }

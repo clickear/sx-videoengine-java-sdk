@@ -54,6 +54,8 @@ public class VideoEngine {
 
     private native int nRenderProcessSetSnapShotFrames(String id, int[] frames);
 
+    private native float nRenderProcessProgress(String id);
+
     /**********************************************************************************
      *
      * 进程模式渲染接口
@@ -272,6 +274,15 @@ public class VideoEngine {
         return nRenderProcessStart(id) == 0;
     }
 
+    /**
+     * 获取渲染进度
+     *
+     * @param id, render id
+     * @return float
+     */
+    public float getRenderProcessProgress(String id) {
+        return nRenderProcessProgress(id);
+    }
 
     /**
      * 获取渲染后的状态

@@ -96,6 +96,70 @@ public class RenderProcessTest {
 
 
     /**
+     * 渲染进度获取
+     *
+     * */
+
+    @Test
+    public void testProgress() {
+        File f = new File("");
+        String basePath = f.getAbsolutePath();
+
+        VideoEngine engine = new VideoEngine();
+
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya_img.mp4";
+
+
+        String[] paths = {
+                basePath + "/workspace/assets/1.jpeg",
+                basePath + "/workspace/assets/2.jpeg",
+                basePath + "/workspace/assets/3.jpeg",
+                basePath + "/workspace/assets/4.jpeg",
+                basePath + "/workspace/assets/5.jpeg",
+        };
+
+        VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+        task.setAssetPaths(paths);
+
+
+        // 获取进度进程
+        Thread progressThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    float progress = task.getRenderProgress();
+                    System.out.println("-- " + progress + "\n");
+                    if (progress == 1) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        progressThread.start();
+
+
+        // 渲染开始
+        try {
+            boolean ret = task.render();
+        } catch (InvalidLicenseException e) {
+            e.printStackTrace();
+        } catch (RenderException e) {
+            e.printStackTrace();
+        } catch (NotSupportedTemplateException e) {
+            e.printStackTrace();
+        } finally {
+            task.destroy();
+        }
+    }
+
+
+    /**
      * 测试 音乐, 水印
      *
      *
@@ -145,6 +209,10 @@ public class RenderProcessTest {
         list.add(mark2);
 
         task.setWatermarkList(list);
+
+        // 设置视频码率, 可以用于调整视频文件大小
+        // 码率越高, 视频画面质量越高, 默认 0.25
+        task.setBitrateControl(0.1f);
 
         try {
             boolean ret = task.render();
