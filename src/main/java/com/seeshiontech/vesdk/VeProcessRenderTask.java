@@ -47,6 +47,13 @@ public class VeProcessRenderTask {
     private String errorMsg = "";
 
     /**
+     * 错误码
+     *
+     * see {@link ErrorCode}
+     * */
+    private int errorCode = ErrorCode.ERR.getErrCode();
+
+    /**
      * 模板类型
      *
      * 普通模板
@@ -112,7 +119,9 @@ public class VeProcessRenderTask {
     /**
      * 引擎素材目录存放路径
      *
-     * @note 文字绘制生成的图片将会保存到该目录, 该目录需要调用方进行清理工作
+     *<p>
+     * 文字绘制生成的图片将会保存到该目录, 该目录需要调用方进行清理工作
+     *</p>
      *
      * */
     private String assetPath;
@@ -199,7 +208,24 @@ public class VeProcessRenderTask {
         return true;
     }
 
+    /**
+     * 获取渲染错误码
+     *
+     * @return int, see {@link ErrorCode}
+     * */
+    public int getErrorCode() {
+        if (engine != null) {
+           return engine.getRenderProcessError(renderId) ;
+        }
+        return ErrorCode.ERR.getErrCode();
+    }
 
+
+    /**
+     * 获取渲染任务状态
+     *
+     * @return String, see {@link RenderStatus}
+     * */
     public String getStatus() {
         return status;
     }
@@ -388,9 +414,11 @@ public class VeProcessRenderTask {
      * */
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {
         if (!initialized) {
+            errorCode = ErrorCode.ERR.getErrCode();
             errorMsg = "task not initialized";
             return false;
         }
+
         if (this.assetPaths != null && this.assetPaths.length > 0) {
             boolean set = engine.setRenderProcessReplaceableFiles(renderId, assetPaths);
             if (!set) {
@@ -452,21 +480,21 @@ public class VeProcessRenderTask {
 
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
 
-        boolean success = engine.startRenderProcess(renderId);
+        errorCode = engine.nStartRenderProcess(renderId);
 
-        if (!success)  {
-            errorMsg = "start render process failed";
+        if (errorCode != ErrorCode.OK.getErrCode())  {
+            errorMsg = "start render process failed, error code : " + errorCode;
             return false;
         }
 
 
         status = engine.getRenderProcessStatus(renderId);
         if (status.equals("end")) {
-            errorMsg = "task exit with status : " + status;
+            errorMsg = "task exit with status : " + status + ", error code : " + errorCode;
             return true;
         }
 
-        errorMsg = "task exit with status : " + status;
+        errorMsg = "task exit with status : " + status + ", error code : " + errorCode;
         return false;
     }
 

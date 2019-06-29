@@ -63,7 +63,7 @@ public class RenderProcessTest {
          * kenbentuya
          * */
 
-        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String tplFolder = basePath + "/workspace/template/kenbentuya1/";
         String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
 
         String[] paths = {
@@ -82,7 +82,8 @@ public class RenderProcessTest {
         try {
             boolean ret = task.render();
             String info = task.getTaskRenderedInfo();
-            System.out.println(info);
+            int errorCode = task.getErrorCode();
+            System.out.println(info + " : " + errorCode);
         } catch (InvalidLicenseException e) {
             e.printStackTrace();
         } catch (RenderException e) {
