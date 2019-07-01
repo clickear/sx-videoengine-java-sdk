@@ -47,18 +47,15 @@ public class VeProcessRenderTask {
     private String errorMsg = "";
 
     /**
-     * 错误码
-     *
-     * see {@link ErrorCode}
+     * 错误码 {@link ErrorCode}
      * */
     private int errorCode = ErrorCode.ERR.getErrCode();
 
     /**
-     * 模板类型
+     * 模板类型 {@link TemplateType}
      *
      * 普通模板
      * 动态模板
-     *
      * */
     private TemplateType templateType = TemplateType.NORMAL_TEMPLATE;
 
@@ -105,7 +102,9 @@ public class VeProcessRenderTask {
     /**
      * 动态模板附加素材数据　json 字符串
      *
-     * @note 非动态模板设置无效
+     * <p>
+     *     非动态模板设置无效
+     * </p>
      * */
     private String subImgJson;
 
@@ -168,14 +167,7 @@ public class VeProcessRenderTask {
     private int[] snapShotFrames;
 
     /**
-     * 渲染任务状态
-     *
-     * start   开始
-     * update　更新
-     * end　　 渲染完成
-     * fail　　渲染失败
-     * cancel　渲染被取消
-     * crash　 渲染崩溃
+     * 渲染任务状态 {@link RenderStatus}
      * */
     private String status = "";
 
@@ -256,6 +248,8 @@ public class VeProcessRenderTask {
 
     /**
      * 检查 license 是否有效
+     *
+     * @return boolean
      * */
     public boolean isLicenseValid() {
         return engine.isRenderProcessLicenseValid(renderId);
@@ -265,6 +259,7 @@ public class VeProcessRenderTask {
     /**
      * 获取 license 信息
      *
+     * @return String
      * */
     public String getLicenseProfile() {
         if (!initialized){
@@ -278,6 +273,7 @@ public class VeProcessRenderTask {
     /**
      * 获取渲染错误信息
      *
+     * @return String, see {@link RenderStatus}
      * */
     public String getErrorMsg() {
         return errorMsg;
@@ -374,9 +370,10 @@ public class VeProcessRenderTask {
     /**
      * 为动态模板设置关联的附加文字
      *
-     * @note 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path
-     *
-     * @note 非动态模板设置无效
+     * <p>
+     * 1. 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path <br/>
+     * 2. 非动态模板设置无效
+     * </p>
      *
      * @param subTextJson, 文字素材数组
      * */
@@ -387,9 +384,11 @@ public class VeProcessRenderTask {
     /**
      * 设置引擎生成的素材存放目录,
      *
-     * @note TextPainter 绘制的文字图片会被放到设置的目录, 引擎不会对该目录执行清理动作,
-     *      需要调用方在渲染完成后,删除该目录进行清理
-     * @note 由于生成的素材可能与别的任务重名,所以建议每个任务使用单独的素材目录
+     * <p>
+     * 1. TextPainter 绘制的文字图片会被放到设置的目录, 引擎不会对该目录执行清理动作,
+     * 需要调用方在渲染完成后,删除该目录进行清理 <br/>
+     * 2.  由于生成的素材可能与别的任务重名,所以建议每个任务使用单独的素材目录
+     * </p>
      *
      * @param assetPath, 素材存放目录
      * */
@@ -401,7 +400,9 @@ public class VeProcessRenderTask {
     /**
      * 设置文字绘制工具目录
      *
-     * @note 引擎将使用该目录的 TextPainter 和 font_list.json 进行文字绘制
+     * <p>
+     * 1. 引擎使用该目录的 TextPainter 和 font_list.json 进行文字绘制
+     * </p>
      *
      * @param textPainterPath, 文字绘制工具目录
      * */
@@ -411,6 +412,8 @@ public class VeProcessRenderTask {
 
     /**
      * 启动渲染
+     *
+     * @return boolean
      * */
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {
         if (!initialized) {
@@ -422,7 +425,8 @@ public class VeProcessRenderTask {
         if (this.assetPaths != null && this.assetPaths.length > 0) {
             boolean set = engine.setRenderProcessReplaceableFiles(renderId, assetPaths);
             if (!set) {
-                errorMsg = "set task asset paths failed";
+                errorCode = ErrorCode.INVALID_ASSETS_DATA.getErrCode();
+                errorMsg = ErrorCode.INVALID_ASSETS_DATA.getErrMsg();
                 return false;
             }
         }
@@ -476,8 +480,7 @@ public class VeProcessRenderTask {
             engine.setRenderProcessSnapShotFrames(renderId, snapShotFrames);
         }
 
-        boolean set = engine.setRenderProcessBitrateControl(renderId, bitrateControl);
-
+        engine.setRenderProcessBitrateControl(renderId, bitrateControl);
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
 
         errorCode = engine.nStartRenderProcess(renderId);

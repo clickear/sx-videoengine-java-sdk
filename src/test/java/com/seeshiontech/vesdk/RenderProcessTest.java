@@ -81,8 +81,13 @@ public class RenderProcessTest {
 
         try {
             boolean ret = task.render();
+
+            // 获取渲染状态
             String info = task.getTaskRenderedInfo();
+
+            // 获取渲染错误码
             int errorCode = task.getErrorCode();
+
             System.out.println(info + " : " + errorCode);
         } catch (InvalidLicenseException e) {
             e.printStackTrace();

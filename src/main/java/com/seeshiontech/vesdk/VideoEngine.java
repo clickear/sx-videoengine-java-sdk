@@ -127,16 +127,6 @@ public class VideoEngine {
         return nRenderProcessSetReplaceableFiles(id, paths) == 0;
     }
 
-    /**
-     * 设置主替换素材, 并返回错误码
-     *
-     * @param id,    render id
-     * @param paths, 素材数组
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessReplaceableFiles(String id, String[] paths) {
-        return nRenderProcessSetReplaceableFiles(id, paths);
-    }
 
     /**
      * 为动态模板设置关联的附加素材
@@ -148,20 +138,6 @@ public class VideoEngine {
      */
     public boolean setRenderProcessDynamicSubFiles(String id, String json) {
         return nRenderProcessSetDynamicSubFiles(id, json) == 0;
-    }
-
-    /**
-     * 为动态模板设置关联的附加素材, 并返回错误码
-     *
-     *
-     * <p>非动态模板设置无效</p>
-     *
-     * @param id,   render id
-     * @param json, 素材数组
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessDynamicSubFiles(String id, String json) {
-        return nRenderProcessSetDynamicSubFiles(id, json);
     }
 
 
@@ -181,20 +157,6 @@ public class VideoEngine {
         return nRenderProcessSetDynamicSubTexts(id, json) == 0;
     }
 
-    /**
-     * 为动态模板设置关联的附加文字, 并返回错误码
-     * <p>
-     *     1. 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpainter path <br/>
-     *     2. 非动态模板设置无效
-     * </p>
-     *
-     * @param id,   render id
-     * @param json, 文字素材数组
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessDynamicSubTexts(String id, String json) {
-        return nRenderProcessSetDynamicSubTexts(id, json);
-    }
 
     /**
      * 设置引擎生成的素材存放目录
@@ -213,22 +175,6 @@ public class VideoEngine {
         return nRenderProcessSetAssetPath(id, path) == 0;
     }
 
-    /**
-     * 设置引擎生成的素材存放目录, 并返回错误码
-     *
-     * <p>
-     * 1. TextPainter 绘制的文字图片会被放到设置 AssetPath目录, 引擎不会对该目录执行清理动作,
-     * 需要调用方在渲染完成后,删除该目录进行清理 <br/>
-     * 2. 由于生成的素材可能与其他任务的图片重名, 所以建议每个任务使用单独的素材目录
-     * </p>
-     *
-     * @param id,   render id
-     * @param path, 素材存放目录
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessAssetPath(String id, String path) {
-        return nRenderProcessSetAssetPath(id, path);
-    }
 
     /**
      * 设置文字绘制工具目录
@@ -245,20 +191,6 @@ public class VideoEngine {
         return nRenderProcessSetTextPainterPath(id, path) == 0;
     }
 
-    /**
-     * 设置文字绘制工具目录, 并返回错误码
-     *
-     * <p>
-     * 引擎会使用该目录的 TextPainter 和 font_list.json 进行文字绘制
-     * </p>
-     *
-     * @param id,   render id
-     * @param path, 文字绘制工具目录
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessTextPainterPath(String id, String path) {
-        return nRenderProcessSetTextPainterPath(id, path);
-    }
 
     /**
      * 设置快照存储目录
@@ -275,19 +207,6 @@ public class VideoEngine {
         return nRenderProcessSetSnapShotPath(id, path) == 0;
     }
 
-    /**
-     * 设置快照存储目录, 并返回错误码
-     * <p>
-     * 引擎将使用该目录保存快照
-     * </p>
-     *
-     * @param id,   render id
-     * @param path, 快照目录
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessSnapShotPath(String id, String path) {
-        return nRenderProcessSetSnapShotPath(id, path);
-    }
 
     /**
      * 设置快照帧索引
@@ -303,19 +222,6 @@ public class VideoEngine {
         return nRenderProcessSetSnapShotFrames(id, frames) == 0;
     }
 
-    /**
-     * 设置快照帧索引, 并返回错误码
-     * <p>
-     * [1, 100] 表示第1, 100 帧会被生成 1.png , 100.png 到 snapshot path 目录中
-     * </p>
-     *
-     * @param id,    render id
-     * @param frames
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessSnapShotFrames(String id, int[] frames) {
-        return nRenderProcessSetSnapShotFrames(id, frames);
-    }
 
     /**
      * 设置音乐
@@ -327,18 +233,6 @@ public class VideoEngine {
      */
     public boolean setRenderProcessMusicFile(String id, String musicPath, boolean loop) {
         return nRenderProcessSetMusicFile(id, musicPath, loop) == 0;
-    }
-
-    /**
-     * 设置音乐, 并返回错误码
-     *
-     * @param id,        render id
-     * @param musicPath, 音乐文件路径
-     * @param loop       是否循环音乐
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessMusicFile(String id, String musicPath, boolean loop) {
-        return nRenderProcessSetMusicFile(id, musicPath, loop);
     }
 
 
@@ -353,16 +247,6 @@ public class VideoEngine {
         return nRenderProcessSetMusicLoop(id, loop) == 0;
     }
 
-    /**
-     * 设置音乐是否循环, 并返回错误码
-     *
-     * @param id,  render id
-     * @param loop 是否循环音乐
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessMusicLoop(String id, boolean loop) {
-        return nRenderProcessSetMusicLoop(id, loop);
-    }
 
     /**
      * 设置音乐淡出时间, 单位秒
@@ -375,16 +259,6 @@ public class VideoEngine {
         return nRenderProcessSetMusicFadeoutDuration(id, duration) == 0;
     }
 
-    /**
-     * 设置音乐淡出时间, 单位秒, 并返回错误码
-     *
-     * @param id,      render id
-     * @param duration 淡出时间
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessMusicFadeoutDuration(String id, int duration) {
-        return nRenderProcessSetMusicFadeoutDuration(id, duration);
-    }
 
     /**
      * 设置音量控制参数
@@ -397,16 +271,6 @@ public class VideoEngine {
         return nRenderProcessSetMusicVolume(id, volume) == 0;
     }
 
-    /**
-     * 设置音量控制参数, 并返回错误码
-     *
-     * @param id,    render id
-     * @param volume
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessMusicVolume(String id, float volume) {
-        return nRenderProcessSetMusicVolume(id, volume);
-    }
 
     /**
      * 添加水印
@@ -426,24 +290,7 @@ public class VideoEngine {
     }
 
     /**
-     * 添加水印, 并返回错误码
-     *
-     * @param id,       render id
-     * @param paths
-     * @param posX      水印 x 坐标
-     * @param posY      水印 y 坐标
-     * @param timeStart 开始时间,单位秒
-     * @param timeEnd   结束时间,单位秒
-     * @param scaleX    x 轴缩放
-     * @param scaleY    y 轴缩放
-     * @return int, {@link ErrorCode}
-     */
-    public int nAddRenderProcessWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY) {
-        return nRenderProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY);
-    }
-
-    /**
-     * 启动渲染
+     * 启动渲染, 返回成功或失败
      *
      * @param id, render id
      * @return boolean
@@ -453,10 +300,10 @@ public class VideoEngine {
     }
 
     /**
-     * 启动渲染, 并返回错误码
+     * 启动渲染, 返回响应错误码
      *
      * @param id, render id
-     * @return int, {@link ErrorCode}
+     * @return int, 错误码参考 {@link ErrorCode}
      */
     public int nStartRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
         return nRenderProcessStart(id);
@@ -514,17 +361,6 @@ public class VideoEngine {
     }
 
     /**
-     * 设置比特率控制参数, 并返回错误码
-     *
-     * @param id,     render id
-     * @param control 0.0 - 1.0
-     * @return int, {@link ErrorCode}
-     */
-    public int nSetRenderProcessBitrateControl(String id, float control) {
-        return nRenderProcessSetBitrateControl(id, control);
-    }
-
-    /**
      * 设置渲染任务 Lua 脚本
      *
      * @param id,       render id
@@ -539,20 +375,6 @@ public class VideoEngine {
         return nRenderProcessSetScript(id, mainFile, scriptDir, data) == 0;
     }
 
-    /**
-     * 设置渲染任务 Lua 脚本, 并返回错误码
-     *
-     * @param id,       render id
-     * @param mainFile  lua main 函数所在文件路径
-     * @param scriptDir lua 文件查找目录, 没有传空字符串
-     * @param data      传给脚本的数据, 没有传空字符串
-     * @return int
-     */
-    public int nSetRenderProcessScript(String id, String mainFile, String scriptDir, String data) {
-        data = data == null ? "" : data;
-        scriptDir = scriptDir == null ? "" : scriptDir;
-        return nRenderProcessSetScript(id, mainFile, scriptDir, data);
-    }
     /**
      * 获取渲染后的信息
      *
@@ -642,7 +464,7 @@ public class VideoEngine {
 
 
     /**
-     * 启动图片渲染
+     * 启动图片渲染, 返回成功或失败
      *
      * @param id, render id
      * @return boolean
@@ -651,6 +473,15 @@ public class VideoEngine {
         return nRenderImageProcessStart(id) == 0;
     }
 
+    /**
+     * 启动图片渲染, 返回响应错误码
+     *
+     * @param id, render id
+     * @return int, 错误码 {@link ErrorCode}
+     */
+    public int nStartRenderImageProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
+        return nRenderImageProcessStart(id);
+    }
 
     /**
      * 添加图片渲染水印
