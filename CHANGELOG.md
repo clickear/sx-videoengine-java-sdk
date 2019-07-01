@@ -1,7 +1,9 @@
 # VE 视渲染引擎 java sdk
 ### 1.4.0
-+ 新增获取错误码
-+ 增加返回各方法错误码版本接口
++ 新增 nStartRenderProcess, 启动渲染并返回错误码
++ 新增 getRenderProcessError 获取渲染错误码
++ 增加错误码 ErrorCode
++ 增加渲染状态 RenderStatus
 
 
 ### 1.3.19

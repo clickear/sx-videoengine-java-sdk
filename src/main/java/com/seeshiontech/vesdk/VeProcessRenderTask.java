@@ -492,7 +492,7 @@ public class VeProcessRenderTask {
 
 
         status = engine.getRenderProcessStatus(renderId);
-        if (status.equals("end")) {
+        if (status.equals(RenderStatus.END.getStatus())) {
             errorMsg = "task exit with status : " + status + ", error code : " + errorCode;
             return true;
         }
