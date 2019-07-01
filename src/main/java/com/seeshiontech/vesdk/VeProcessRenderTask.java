@@ -371,7 +371,7 @@ public class VeProcessRenderTask {
      * 为动态模板设置关联的附加文字
      *
      * <p>
-     * 1. 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path <br/>
+     * 1. 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpianter path <br>
      * 2. 非动态模板设置无效
      * </p>
      *
@@ -386,7 +386,7 @@ public class VeProcessRenderTask {
      *
      * <p>
      * 1. TextPainter 绘制的文字图片会被放到设置的目录, 引擎不会对该目录执行清理动作,
-     * 需要调用方在渲染完成后,删除该目录进行清理 <br/>
+     * 需要调用方在渲染完成后,删除该目录进行清理 <br>
      * 2.  由于生成的素材可能与别的任务重名,所以建议每个任务使用单独的素材目录
      * </p>
      *
@@ -413,6 +413,9 @@ public class VeProcessRenderTask {
     /**
      * 启动渲染
      *
+     * @throws InvalidLicenseException
+     * @throws RenderException
+     * @throws NotSupportedTemplateException
      * @return boolean
      * */
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {

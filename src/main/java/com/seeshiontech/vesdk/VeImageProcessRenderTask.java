@@ -92,6 +92,8 @@ public class VeImageProcessRenderTask {
 
     /**
      * 检查 license 是否有效
+     *
+     * @return boolean
      * */
     public boolean isLicenseValid() {
         return engine.isRenderImageProcessLicenseValid(renderId);
@@ -100,6 +102,7 @@ public class VeImageProcessRenderTask {
     /**
      * 获取 license 信息
      *
+     * @return String
      * */
     public String getLicenseProfile() {
         if (!initialized){
@@ -120,6 +123,8 @@ public class VeImageProcessRenderTask {
 
     /**
      * 设置水印
+     *
+     * @param watermarkList, 水印数据数组
      * */
     public void setWatermarkList(List<Watermark> watermarkList) {
         this.watermarkList = watermarkList;
@@ -127,6 +132,11 @@ public class VeImageProcessRenderTask {
 
     /**
      * 启动渲染
+     *
+     * @throws InvalidLicenseException
+     * @throws RenderException
+     * @throws NotSupportedTemplateException
+     * @return boolean
      * */
     public boolean render() throws InvalidLicenseException, RenderException, NotSupportedTemplateException {
         if (!initialized) {

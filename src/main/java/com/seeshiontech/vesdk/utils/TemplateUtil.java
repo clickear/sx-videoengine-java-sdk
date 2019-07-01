@@ -59,6 +59,8 @@ public class TemplateUtil {
     /**
      * 解析 comp
      *
+     * @param value
+     * @return CompData
      * */
     private CompData compResolve(JSONObject value) {
         CompData compData = new CompData();
@@ -83,6 +85,7 @@ public class TemplateUtil {
     /**
      * 解析传入的配置文件
      *
+     * @param json, config.json content
      * */
     private void load(String json) {
         JSONObject config = JSON.parseObject(json);
@@ -270,6 +273,8 @@ public class TemplateUtil {
     /**
      * 计算 comp 中可替换的素材数目
      *
+     * @param comp
+     * @param sourcesNames
      * */
     private void computeReplaceNum(CompData comp, HashSet<String> sourcesNames) {
         Iterator<LayerData> layers = comp.layers.iterator();
@@ -303,6 +308,8 @@ public class TemplateUtil {
      *
      * 单位: 秒
      *
+     * @param num
+     * @return float
      * */
     public float getDurationWithFileNum(int num) {
 

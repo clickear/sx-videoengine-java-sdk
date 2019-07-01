@@ -131,10 +131,12 @@ public class VideoEngine {
     /**
      * 为动态模板设置关联的附加素材
      *
+     * <p>
+     *     非动态模板设置无效
+     * </p>
      * @param id,   render id
      * @param json, 素材数组
      * @return boolean
-     * @note 非动态模板设置无效
      */
     public boolean setRenderProcessDynamicSubFiles(String id, String json) {
         return nRenderProcessSetDynamicSubFiles(id, json) == 0;
@@ -145,7 +147,7 @@ public class VideoEngine {
      * 为动态模板设置关联的附加文字
      *
      * <p>
-     *     1. 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpainter path <br/>
+     *     1. 当前文字是由 TextPainter 绘制,使用这个接口, 必须先设置好 assetPath 和 textpainter path <br>
      *     2. 非动态模板设置无效
      * </p>
      *
@@ -163,7 +165,7 @@ public class VideoEngine {
      *
      * <p>
      * 1. TextPainter 绘制的文字图片会被放到设置 AssetPath目录, 引擎不会对该目录执行清理动作,
-     * 需要调用方在渲染完成后,删除该目录进行清理 <br/>
+     * 需要调用方在渲染完成后,删除该目录进行清理 <br>
      * 2. 由于生成的素材可能与其他任务的图片重名, 所以建议每个任务使用单独的素材目录
      * </p>
      *
@@ -294,6 +296,9 @@ public class VideoEngine {
      *
      * @param id, render id
      * @return boolean
+     * @throws InvalidLicenseException
+     * @throws RenderException
+     * @throws NotSupportedTemplateException
      */
     public boolean startRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
         return nRenderProcessStart(id) == 0;
@@ -304,6 +309,9 @@ public class VideoEngine {
      *
      * @param id, render id
      * @return int, 错误码参考 {@link ErrorCode}
+     * @throws InvalidLicenseException
+     * @throws RenderException
+     * @throws NotSupportedTemplateException
      */
     public int nStartRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
         return nRenderProcessStart(id);
@@ -378,9 +386,11 @@ public class VideoEngine {
     /**
      * 获取渲染后的信息
      *
+     * <p>
+     *     在 startRenderProcess 后调用
+     * </p>
      * @param id render id
      * @return String
-     * @note 在 startRenderProcess 后调用
      */
     public String getRenderProcessRenderedInfo(String id) {
         return nRenderProcessRenderedInfo(id);
@@ -468,6 +478,9 @@ public class VideoEngine {
      *
      * @param id, render id
      * @return boolean
+     * @throws InvalidLicenseException
+     * @throws RenderException
+     * @throws NotSupportedTemplateException
      */
     public boolean startRenderImageProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
         return nRenderImageProcessStart(id) == 0;
@@ -478,6 +491,9 @@ public class VideoEngine {
      *
      * @param id, render id
      * @return int, 错误码 {@link ErrorCode}
+     * @throws InvalidLicenseException
+     * @throws RenderException
+     * @throws NotSupportedTemplateException
      */
     public int nStartRenderImageProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
         return nRenderImageProcessStart(id);
