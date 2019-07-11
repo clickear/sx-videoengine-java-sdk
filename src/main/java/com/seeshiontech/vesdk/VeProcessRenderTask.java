@@ -3,7 +3,6 @@ package com.seeshiontech.vesdk;
 import com.seeshiontech.vesdk.exceptions.InvalidLicenseException;
 import com.seeshiontech.vesdk.exceptions.NotSupportedTemplateException;
 import com.seeshiontech.vesdk.exceptions.RenderException;
-import javafx.util.Pair;
 
 import java.util.Iterator;
 import java.util.List;

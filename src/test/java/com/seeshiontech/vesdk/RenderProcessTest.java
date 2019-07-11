@@ -63,7 +63,7 @@ public class RenderProcessTest {
          * kenbentuya
          * */
 
-        String tplFolder = basePath + "/workspace/template/kenbentuya1/";
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
         String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
 
         String[] paths = {
