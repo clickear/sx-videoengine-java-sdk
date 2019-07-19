@@ -1,4 +1,8 @@
 # VE 视渲染引擎 java sdk
+### 1.4.1
++ 获取任务进度.最终返回至少一次 1.0
++ 修复任务结束未删除 h264 中间文件
+
 ### 1.4.0
 + 新增 nStartRenderProcess, 启动渲染并返回错误码
 + 新增 getRenderProcessError 获取渲染错误码

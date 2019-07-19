@@ -110,10 +110,11 @@ public class RenderProcessTest {
     public void testProgress() {
         File f = new File("");
         String basePath = f.getAbsolutePath();
+        basePath = "/home/slayer/Desktop";
 
         VideoEngine engine = new VideoEngine();
 
-        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String tplFolder = basePath + "/workspace/template/ACT/";
         String outputPath = basePath + "/workspace/output/kenbentuya_img.mp4";
 
 
@@ -129,18 +130,19 @@ public class RenderProcessTest {
         task.setAssetPaths(paths);
 
 
+
         // 获取进度进程
         Thread progressThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true) {
                     float progress = task.getRenderProgress();
-                    System.out.println("-- " + progress + "\n");
-                    if (progress == 1) {
+                    System.out.println("-- " + progress );
+                    if (progress == 1.0) {
                         break;
                     }
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

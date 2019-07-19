@@ -321,6 +321,8 @@ public class VideoEngine {
     /**
      * 获取渲染进度
      *
+     * 无论成功失败,最终都会返回 1.0, 范围 0.0 - 1.0
+     *
      * @param id, render id
      * @return float
      */

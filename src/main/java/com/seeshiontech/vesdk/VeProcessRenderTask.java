@@ -574,7 +574,9 @@ public class VeProcessRenderTask {
     /**
      * 获取渲染进度
      *
-     * @return float, 进度
+     * 无论成功失败,最终都会返回 1.0
+     *
+     * @return float, 范围 0.0 - 1.0
      * */
 
     public float getRenderProgress() {
