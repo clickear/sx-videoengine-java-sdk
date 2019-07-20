@@ -69,6 +69,7 @@ public class RenderProcessTest {
         String[] paths = {
                 basePath + "/workspace/assets/1.jpeg",
                 basePath + "/workspace/assets/2.jpeg",
+                "/home/slayer/Desktop/workspace/music1.mp4",
                 basePath + "/workspace/assets/3.jpeg",
                 basePath + "/workspace/assets/4.jpeg",
                 basePath + "/workspace/assets/5.jpeg",
@@ -78,6 +79,8 @@ public class RenderProcessTest {
 
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
         task.setAssetPaths(paths);
+        task.setDynamicAdaptVideo(true);
+        task.setRetainAudioOfVideo(true);
 
         try {
             boolean ret = task.render();
@@ -114,8 +117,8 @@ public class RenderProcessTest {
 
         VideoEngine engine = new VideoEngine();
 
-        String tplFolder = basePath + "/workspace/template/ACT/";
-        String outputPath = basePath + "/workspace/output/kenbentuya_img.mp4";
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
 
 
         String[] paths = {

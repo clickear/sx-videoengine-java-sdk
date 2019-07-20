@@ -62,6 +62,10 @@ public class VideoEngine {
 
     private native int nRenderProcessError(String id);
 
+    private native int nRenderProcessSetDynamicAdaptVideo(String id, boolean adapt);
+
+    private native int nRenderProcessSetRetainAudioOfVideo(String id, boolean retain);
+
     /**********************************************************************************
      *
      * 进程模式渲染接口
@@ -398,6 +402,27 @@ public class VideoEngine {
         return nRenderProcessRenderedInfo(id);
     }
 
+
+    /**
+     * 设置是否保留视频素材中的音频
+     *
+     * @param id render id
+     * @return boolean
+     * */
+    public boolean setRenderProcessRetainAudioOfVideo(String id, boolean retain) {
+        return nRenderProcessSetRetainAudioOfVideo(id, retain) == 0;
+    }
+
+
+    /**
+     * 设置是否对动态模板中的视频素材自适应
+     *
+     * @param id render id
+     * @return boolean
+     * */
+    public boolean setRenderProcessDynamicAdaptVideo(String id, boolean adapt) {
+        return nRenderProcessSetDynamicAdaptVideo(id, adapt) == 0;
+    }
 
     /**
      * 图片滤镜渲染 jni 接口

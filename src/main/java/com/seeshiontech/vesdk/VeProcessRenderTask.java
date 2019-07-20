@@ -170,6 +170,18 @@ public class VeProcessRenderTask {
      * */
     private String status = "";
 
+
+    /**
+     * 是否保留视频中的音频
+     * */
+    private boolean retainAudioOfVideo = false;
+
+    /**
+     * 设置是否对动态模板中的视频替换素材自适应
+     * */
+    private boolean dynamicAdaptVideo = false;
+
+
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
         this.license = license;
         this.tplFolder = tplFolder;
@@ -409,6 +421,26 @@ public class VeProcessRenderTask {
         this.textPainterPath = textPainterPath;
     }
 
+
+    /**
+     * 是否保留视频替换素材中的音频
+     *
+     * @param retainAudioOfVideo
+     * */
+    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
+        this.retainAudioOfVideo = retainAudioOfVideo;
+    }
+
+
+    /**
+     * 渲染动态模板,是否对视频替换素材进行自适应
+     *
+     * @param dynamicAdaptVideo
+     * */
+    public void setDynamicAdaptVideo(boolean dynamicAdaptVideo) {
+        this.dynamicAdaptVideo = dynamicAdaptVideo;
+    }
+
     /**
      * 启动渲染
      *
@@ -423,6 +455,7 @@ public class VeProcessRenderTask {
             errorMsg = "task not initialized";
             return false;
         }
+
 
         if (this.assetPaths != null && this.assetPaths.length > 0) {
             boolean set = engine.setRenderProcessReplaceableFiles(renderId, assetPaths);
@@ -443,6 +476,7 @@ public class VeProcessRenderTask {
             engine.setRenderProcessMusicFadeoutDuration(renderId, musicFadeoutDuration);
             engine.setRenderProcessMusicVolume(renderId, musicVolume);
         }
+
 
         if (subImgJson != null && subImgJson.length() > 0) {
             boolean set = engine.setRenderProcessDynamicSubFiles(renderId, subImgJson);
@@ -484,6 +518,8 @@ public class VeProcessRenderTask {
 
         engine.setRenderProcessBitrateControl(renderId, bitrateControl);
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
+        engine.setRenderProcessDynamicAdaptVideo(renderId, dynamicAdaptVideo);
+        engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
 
         errorCode = engine.nStartRenderProcess(renderId);
 
