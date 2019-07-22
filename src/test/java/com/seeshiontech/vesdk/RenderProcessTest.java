@@ -19,7 +19,7 @@ import java.util.List;
 public class RenderProcessTest {
 
     // license expire at 2019-07-20
-    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzRnrbG2h8rYuy/5BPJJK+472HZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndfvB3/gBDDFFi1rOkfsudrFVzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBHJn/0iqP+K4EL4T8jXhNx1hldX4EWhjl7KxQkrTJWLI=";
+    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzR/uzGfrP5ptm43dUV4Tw+ZGHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndcoEGbrnr5pHSs8JkGv0p35VzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBq0uhEEKtq2ZckKcaG/1/LVhldX4EWhjl7KxQkrTJWLI=";
 
 
     /**
@@ -113,7 +113,7 @@ public class RenderProcessTest {
     public void testProgress() {
         File f = new File("");
         String basePath = f.getAbsolutePath();
-        basePath = "/home/slayer/Desktop";
+//        basePath = "/home/slayer/Desktop";
 
         VideoEngine engine = new VideoEngine();
 
@@ -133,7 +133,6 @@ public class RenderProcessTest {
         task.setAssetPaths(paths);
 
 
-
         // 获取进度进程
         Thread progressThread = new Thread(new Runnable() {
             @Override
@@ -141,11 +140,11 @@ public class RenderProcessTest {
                 while(true) {
                     float progress = task.getRenderProgress();
                     System.out.println("-- " + progress );
-                    if (progress == 1.0) {
+                    if (progress == 1) {
                         break;
                     }
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -153,7 +152,6 @@ public class RenderProcessTest {
             }
         });
         progressThread.start();
-
 
         // 渲染开始
         try {
