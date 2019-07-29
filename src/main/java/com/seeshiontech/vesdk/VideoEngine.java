@@ -66,6 +66,12 @@ public class VideoEngine {
 
     private native int nRenderProcessSetRetainAudioOfVideo(String id, boolean retain);
 
+    private native String nCreateRenderClipProcess(String outputPath, int key);
+
+    private native int nRenderClipProcessSetParams(String id, int width, int height, float frameRate);
+
+
+
     /**********************************************************************************
      *
      * 进程模式渲染接口
@@ -424,9 +430,51 @@ public class VideoEngine {
         return nRenderProcessSetDynamicAdaptVideo(id, adapt) == 0;
     }
 
+
+
+
+    /**********************************************************************************
+     *
+     * 进程模式剪辑渲染接口
+     *
+     *
+     **********************************************************************************/
+
     /**
-     * 图片滤镜渲染 jni 接口
+     * 创建进程模式剪辑渲染对象
+     *
+     * @param outputFile, 输出路径
+     * @param key         随机数，同一时间保持唯一
+     * @return string render id
      */
+    public String createRenderClipProcess(String outputFile, int key) {
+        return nCreateRenderClipProcess(outputFile, key);
+    }
+
+
+    /**
+     * 设置剪辑的参数
+     *
+     *
+     * @param id,   render id
+     * @param width, 宽, px
+     * @param height, 高, px
+     * @param frameRate, 帧率, fps
+     * @return boolean
+     */
+    public boolean setRenderClipProcessParams(String id, int width, int height, float frameRate) {
+        return nRenderClipProcessSetParams(id, width, height, frameRate) == 0;
+    }
+
+
+
+
+    /************************************************************************************
+     *
+     * 图片滤镜渲染 jni 接口
+     *
+     *
+     **************************************************************************************/
     private native String nCreateRenderImageProcess(String[] imagePaths, String outputPath);
 
     private native boolean nRegisterRenderImageProcessLicense(String id, String licenseStr);
