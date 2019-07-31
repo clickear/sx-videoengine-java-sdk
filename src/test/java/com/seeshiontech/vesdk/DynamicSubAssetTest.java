@@ -29,7 +29,7 @@ public class DynamicSubAssetTest {
         File f = new File("");
         String basePath = f.getAbsolutePath();
 
-        String tplFolder = basePath + "/workspace/template/meipian_test/";
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
         String outputPath = basePath + "/workspace/output/kenbentuya_text.mp4";
 
         String[] paths = {
