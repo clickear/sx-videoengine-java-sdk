@@ -1,5 +1,6 @@
 package com.seeshiontech.vesdk;
 
+import com.alibaba.fastjson.JSON;
 import com.seeshiontech.vesdk.exceptions.InvalidLicenseException;
 import com.seeshiontech.vesdk.exceptions.NotSupportedTemplateException;
 import com.seeshiontech.vesdk.exceptions.RenderException;
@@ -20,6 +21,73 @@ public class RenderProcessTest {
 
     // license expire at 2019-07-20
     private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzR/uzGfrP5ptm43dUV4Tw+ZGHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndcoEGbrnr5pHSs8JkGv0p35VzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBq0uhEEKtq2ZckKcaG/1/LVhldX4EWhjl7KxQkrTJWLI=";
+
+    /**
+     *  渲染测试
+     *
+     * */
+    @Test
+    public void testRenderAssetJson() {
+
+        File f = new File("");
+        String basePath = f.getAbsolutePath();
+
+
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
+
+        String[] paths = {
+                basePath + "/workspace/assets/1.jpeg",
+                basePath + "/workspace/assets/2.jpeg",
+                basePath + "/workspace/assets/3.jpeg",
+                basePath + "/workspace/assets/4.jpeg",
+                basePath + "/workspace/assets/5.jpeg",
+                basePath + "/workspace/assets/6.jpeg"
+        };
+
+
+        List<Asset> list = new ArrayList<>();
+        Asset asset = new Asset(paths[0]);
+        asset.addPrefixTextReplaceAsset("hello", "dtext");
+        list.add(asset);
+        Asset asset2 = new Asset(paths[1]);
+        asset2.addPrefixTextReplaceAsset("你好", "dtext");
+        list.add(asset2);
+        Asset asset3 = new Asset();
+        asset3.addTextReplaceAsset("你好", "title");
+        list.add(asset3);
+
+        VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+
+        task.setAssetJson(JSON.toJSONString(list));
+//        task.setDynamicAdaptVideo(true);
+//        task.setRetainAudioOfVideo(true);
+        // 设置文字绘制工具目录, 必须设置, 以 / 结尾
+        task.setTextPainterDir("/home/slayer/workspace/textpainter/");
+
+        // 设置素材保存目录, 必须设置, 以 / 结尾
+        task.setAssetDir(basePath + "/workspace/assets/");
+
+        try {
+            boolean ret = task.render();
+
+            // 获取渲染状态
+            String info = task.getTaskRenderedInfo();
+
+            // 获取渲染错误码
+            int errorCode = task.getErrorCode();
+
+            System.out.println(info + " : " + errorCode);
+        } catch (InvalidLicenseException e) {
+            e.printStackTrace();
+        } catch (RenderException e) {
+            e.printStackTrace();
+        } catch (NotSupportedTemplateException e) {
+            e.printStackTrace();
+        } finally {
+            task.destroy();
+        }
+    }
 
 
     /**
@@ -69,7 +137,6 @@ public class RenderProcessTest {
         String[] paths = {
                 basePath + "/workspace/assets/1.jpeg",
                 basePath + "/workspace/assets/2.jpeg",
-                "/home/slayer/Desktop/workspace/music1.mp4",
                 basePath + "/workspace/assets/3.jpeg",
                 basePath + "/workspace/assets/4.jpeg",
                 basePath + "/workspace/assets/5.jpeg",

@@ -31,6 +31,11 @@ public class VeProcessRenderTask {
     private String[] assetPaths;
 
     /**
+     * 替换素材 json
+     * */
+    private String assetJson;
+
+    /**
      * vengine 核心类
      * */
     private VideoEngine engine;
@@ -300,6 +305,14 @@ public class VeProcessRenderTask {
         this.assetPaths = paths;
     }
 
+    /**
+     * 设置替换素材 json
+     *
+     * @param json
+     * */
+    public void setAssetJson(String json) {
+        this.assetJson = json;
+    }
 
     /**
      * 设置音乐文件
@@ -465,6 +478,16 @@ public class VeProcessRenderTask {
                 return false;
             }
         }
+
+        if (this.assetJson != null && this.assetJson.length() > 0) {
+            boolean set = engine.setRenderProcessReplaceableJson(renderId, assetJson);
+            if (!set) {
+                errorCode = ErrorCode.INVALID_ASSETS_DATA.getErrCode();
+                errorMsg = ErrorCode.INVALID_ASSETS_DATA.getErrMsg();
+                return false;
+            }
+        }
+
 
         if (this.musicPath != null && this.musicPath.length() > 0) {
             boolean set = engine.setRenderProcessMusicFile(renderId, musicPath, musicLoop);

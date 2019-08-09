@@ -24,6 +24,8 @@ public class VideoEngine {
 
     private native int nRenderProcessSetReplaceableFiles(String id, String[] paths);
 
+    private native int nRenderProcessSetReplaceableJson(String id, String json);
+
     private native int nRenderProcessSetDynamicSubFiles(String id, String json);
 
     private native int nRenderProcessSetMusicFile(String id, String musicPath, boolean loop);
@@ -135,6 +137,18 @@ public class VideoEngine {
      */
     public boolean setRenderProcessReplaceableFiles(String id, String[] paths) {
         return nRenderProcessSetReplaceableFiles(id, paths) == 0;
+    }
+
+
+    /**
+     * 设置替换素材信息
+     *
+     * @param id,    render id
+     * @param json, 素材信息
+     * @return boolean
+     */
+    public boolean setRenderProcessReplaceableJson(String id, String json) {
+        return nRenderProcessSetReplaceableJson(id, json) == 0;
     }
 
 
