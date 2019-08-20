@@ -33,7 +33,7 @@ public class VeProcessRenderTask {
     /**
      * 替换素材 json
      * */
-    private String assetJson;
+    private String replaceableJson;
 
     /**
      * vengine 核心类
@@ -308,10 +308,12 @@ public class VeProcessRenderTask {
     /**
      * 设置替换素材 json
      *
+     * 参考 http://www.seeshiontech.com/docs/page_103.html
+     *
      * @param json
      * */
-    public void setAssetJson(String json) {
-        this.assetJson = json;
+    public void setReplaceableJson(String json) {
+        this.replaceableJson = json;
     }
 
     /**
@@ -479,8 +481,8 @@ public class VeProcessRenderTask {
             }
         }
 
-        if (this.assetJson != null && this.assetJson.length() > 0) {
-            boolean set = engine.setRenderProcessReplaceableJson(renderId, assetJson);
+        if (this.replaceableJson != null && this.replaceableJson.length() > 0) {
+            boolean set = engine.setRenderProcessReplaceableJson(renderId, replaceableJson);
             if (!set) {
                 errorCode = ErrorCode.INVALID_ASSETS_DATA.getErrCode();
                 errorMsg = ErrorCode.INVALID_ASSETS_DATA.getErrMsg();

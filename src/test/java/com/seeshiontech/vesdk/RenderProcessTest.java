@@ -61,9 +61,7 @@ public class RenderProcessTest {
 
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
 
-        task.setAssetJson(JSON.toJSONString(list));
-//        task.setDynamicAdaptVideo(true);
-//        task.setRetainAudioOfVideo(true);
+        task.setReplaceableJson(JSON.toJSONString(list));
         // 设置文字绘制工具目录, 必须设置, 以 / 结尾
         task.setTextPainterDir("/home/slayer/workspace/textpainter/");
 
