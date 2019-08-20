@@ -25,6 +25,8 @@ public class RenderProcessTest {
     /**
      *  渲染测试
      *
+     *  参考 http://www.seeshiontech.com/docs/page_103.html
+     *
      * */
     @Test
     public void testRenderAssetJson() {
@@ -135,7 +137,7 @@ public class RenderProcessTest {
         String outputPath = basePath + "/workspace/output/kenbentuya.mp4";
 
         String[] paths = {
-                basePath + "/workspace/assets/1.jpeg",
+                basePath + "/workspace/assets/1.gif",
                 basePath + "/workspace/assets/2.jpeg",
                 basePath + "/workspace/assets/3.jpeg",
                 basePath + "/workspace/assets/4.jpeg",
@@ -146,8 +148,6 @@ public class RenderProcessTest {
 
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
         task.setAssetPaths(paths);
-        task.setDynamicAdaptVideo(true);
-        task.setRetainAudioOfVideo(true);
 
         try {
             boolean ret = task.render();

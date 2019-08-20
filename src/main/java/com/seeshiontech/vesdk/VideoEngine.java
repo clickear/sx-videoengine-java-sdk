@@ -143,6 +143,8 @@ public class VideoEngine {
     /**
      * 设置替换素材信息
      *
+     * 参考 http://www.seeshiontech.com/docs/page_103.html
+     *
      * @param id,    render id
      * @param json, 素材信息
      * @return boolean

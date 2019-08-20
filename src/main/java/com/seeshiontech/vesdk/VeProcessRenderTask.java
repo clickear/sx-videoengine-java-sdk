@@ -179,12 +179,12 @@ public class VeProcessRenderTask {
     /**
      * 是否保留视频中的音频
      * */
-    private boolean retainAudioOfVideo = false;
+//    private boolean retainAudioOfVideo = false;
 
     /**
      * 设置是否对动态模板中的视频替换素材自适应
      * */
-    private boolean dynamicAdaptVideo = false;
+//    private boolean dynamicAdaptVideo = false;
 
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
@@ -440,9 +440,9 @@ public class VeProcessRenderTask {
      *
      * @param retainAudioOfVideo
      * */
-    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
-        this.retainAudioOfVideo = retainAudioOfVideo;
-    }
+//    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
+//        this.retainAudioOfVideo = retainAudioOfVideo;
+//    }
 
 
     /**
@@ -450,9 +450,9 @@ public class VeProcessRenderTask {
      *
      * @param dynamicAdaptVideo
      * */
-    public void setDynamicAdaptVideo(boolean dynamicAdaptVideo) {
-        this.dynamicAdaptVideo = dynamicAdaptVideo;
-    }
+//    public void setDynamicAdaptVideo(boolean dynamicAdaptVideo) {
+//        this.dynamicAdaptVideo = dynamicAdaptVideo;
+//    }
 
     /**
      * 启动渲染
@@ -541,8 +541,8 @@ public class VeProcessRenderTask {
 
         engine.setRenderProcessBitrateControl(renderId, bitrateControl);
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
-        engine.setRenderProcessDynamicAdaptVideo(renderId, dynamicAdaptVideo);
-        engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
+//        engine.setRenderProcessDynamicAdaptVideo(renderId, dynamicAdaptVideo);
+//        engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
 
         errorCode = engine.nStartRenderProcess(renderId);
 
