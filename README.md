@@ -15,6 +15,7 @@
 + opengl : 3.0 or newer 
 + Java： jdk 1.8
 + ffmpeg : 4.1   
++ libfreeimage: 3 or newer( 1.4.4.release 版本需要)
 
 ### 注意事项
 
@@ -53,8 +54,13 @@
         apt-get update
         apt-get -y install ffmpeg
 
++ 安装 libfreeimage  (1.4.4.release 及以上需要安装 )
+    
+        apt-get install libfreeimage3
+        
 + workspace 中有可供测试的模板,图片和音乐文件
 + 参考 RenderProcessTest 用例获取开发步骤
+
 
 
 

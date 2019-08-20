@@ -1,5 +1,9 @@
 # VE 视渲染引擎 java sdk
 
+### 1.4.4.release
++ 支持 gif 素材 (依赖 libfreeimage, 参考 README.md 安装依赖 )
++ 修复已知崩溃问题
+
 
 ### 1.4.3.alpha
 + 增加设置替换素材新接口
