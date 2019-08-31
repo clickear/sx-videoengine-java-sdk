@@ -16,6 +16,8 @@ public class VideoEngine {
 
     private native String nCreateRenderProcess(String tplFolder, String outputPath, int key);
 
+    private static  native void nRenderProcessSetLoggerLevel(int level);
+
     private native boolean nRegisterRenderProcessLicense(String id, String licenseStr);
 
     private native String nRenderProcessLicenseProfile(String id);
@@ -93,6 +95,16 @@ public class VideoEngine {
         return nCreateRenderProcess(tplFolder, outputFile, key);
     }
 
+
+
+    /**
+     * 设置全局日志打印级别
+     *
+     * @param level, see {@link LogLevel}
+     * */
+    public static void setRenderProcessLoggerLevel(LogLevel level) {
+        nRenderProcessSetLoggerLevel(level.getValue());
+    }
 
     /**
      * 注册 license

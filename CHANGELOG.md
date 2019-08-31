@@ -1,5 +1,13 @@
 # VE 视渲染引擎 java sdk
 
+### 1.4.5.release
++ 优化 GIF 素材支持
++ 支持图层样式（投影，颜色叠加，描边）
++ 增加特效支持检查
++ 优化 renderId 安全检查
++ 优化运行稳定性
++ 增加 setRenderProcessLoggerLevel 用户设置引擎日志打印级别
+
 ### 1.4.4.release
 + 支持 gif 素材 (依赖 libfreeimage, 参考 README.md 安装依赖 )
 + 修复已知崩溃问题

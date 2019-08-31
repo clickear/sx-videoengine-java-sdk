@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 
 /**
  * 渲染测试
@@ -20,7 +22,32 @@ import java.util.List;
 public class RenderProcessTest {
 
     // license expire at 2019-07-20
-    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzR/uzGfrP5ptm43dUV4Tw+ZGHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndcoEGbrnr5pHSs8JkGv0p35VzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBq0uhEEKtq2ZckKcaG/1/LVhldX4EWhjl7KxQkrTJWLI=";
+//    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzR/uzGfrP5ptm43dUV4Tw+ZGHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndcoEGbrnr5pHSs8JkGv0p35VzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBq0uhEEKtq2ZckKcaG/1/LVhldX4EWhjl7KxQkrTJWLI=";
+    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzRpgRS2yBRiLVW1Hw32LVz2WHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+nddJfNBgUv7w0oBRt7PGewAEVzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBxC8eAotvl2MdKwLYBrXuhVhldX4EWhjl7KxQkrTJWLI=";
+
+    @Test
+    public void testMulti() {
+
+        int taskNum = 2;
+        CountDownLatch watch = new CountDownLatch(taskNum);
+        for(int i = 0; i < taskNum; i++) {
+            Thread progressThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    testRenderAssetJson();
+                    watch.countDown();
+                }
+            });
+            progressThread.start();
+        }
+
+        try {
+            watch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      *  渲染测试
@@ -59,7 +86,11 @@ public class RenderProcessTest {
         asset3.addTextReplaceAsset("你好", "title");
         list.add(asset3);
 
+        // 设置日志级别
+        VideoEngine.setRenderProcessLoggerLevel(LogLevel.LOG_WARN);
+
         VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+
 
         task.setReplaceableJson(JSON.toJSONString(list));
         // 设置文字绘制工具目录, 必须设置, 以 / 结尾
