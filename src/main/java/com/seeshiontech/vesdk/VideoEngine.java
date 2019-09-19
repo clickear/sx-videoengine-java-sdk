@@ -74,6 +74,8 @@ public class VideoEngine {
 
     private native int nRenderClipProcessSetParams(String id, int width, int height, float frameRate);
 
+    private static  native void nRenderProcessInitLogger();
+
 
 
     /**********************************************************************************
@@ -634,5 +636,6 @@ public class VideoEngine {
 
     static {
         System.loadLibrary("SXVideoEngineJni");
+        nRenderProcessInitLogger();
     }
 }
