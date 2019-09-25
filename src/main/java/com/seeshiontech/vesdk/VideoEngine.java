@@ -78,6 +78,7 @@ public class VideoEngine {
 
 
 
+
     /**********************************************************************************
      *
      * 进程模式渲染接口
@@ -631,6 +632,110 @@ public class VideoEngine {
      */
     public boolean addRenderImageProcessFilter(String id, String filterPath) {
         return nRenderImageProcessAddFilter(id, filterPath) == 0;
+    }
+
+
+    /************************************************************************************
+     *
+     * gif/视频裁剪接口
+     *
+     *
+     **************************************************************************************/
+
+    private native String nCreateRenderCutProcess(String inputPath, String outputPath, int type);
+    private native int nRenderCutProcessSetSize(String id, int width, int height);
+    private native int nRenderCutProcessSetTransform(String id, int anchorX, int anchorY, int posX, int posY, float scale, float rotation);
+    private native int nRenderCutProcessSetStartTime(String id, float startTime);
+    private native int nRenderCutProcessSetDuration(String id, float duration);
+    private native int nRenderCutProcessStart(String id);
+    private native int nRenderCutProcessRelease(String id);
+
+    /**
+     * 创建裁剪任务进程
+     *
+     * 裁剪任务使用 gif/视频文件 按照指定参数输出裁剪后的视频文件
+     *
+     * @param inputPath, 源文件路径，为 gif 或者视频文件
+     * @param outputPath, 输出文件路径，以 .mp4 结尾
+     * @param type, see {@link CutTaskType}
+     * @return String, renderId
+     * */
+    public String createRenderCutProcess(String inputPath, String outputPath, CutTaskType type) {
+       return nCreateRenderCutProcess(inputPath, outputPath, type.getValue()) ;
+    }
+
+
+    /**
+     * 设置输出尺寸， 不设置默认使用原始尺寸
+     *
+     * @param id, renderId
+     * @param width, 宽 px
+     * @param height, 高 px
+     * @return boolean
+     * */
+    public boolean RenderCutProcessSetSize(String id, int width, int height) {
+        return nRenderCutProcessSetSize(id, width, height) == 0;
+    }
+
+
+    /**
+     * 设置变换参数
+     *
+     * @param id, renderId
+     * @param anchorX, x 轴 锚点位置 px
+     * @param anchorY, y 轴 锚点位置 px
+     * @param posX, x 轴移动位置 px
+     * @param posY, y 轴移动位置 px
+     * @param scale, 缩放比例 0 - 1
+     * @param rotation, 旋转角度
+     * @return boolean
+     * */
+    public boolean RenderCutProcessSetTransform(String id, int anchorX, int anchorY, int posX, int posY, float scale, float rotation) {
+        return nRenderCutProcessSetTransform(id, anchorX, anchorY, posX, posY, scale, rotation) == 0;
+    }
+
+    /**
+     * 设置裁剪开始时间， 秒
+     *
+     * @param id, renderId
+     * @param startTime, 开始时间
+     * @return boolean
+     *
+     * */
+    public boolean RenderCutProcessSetStartTime(String id, float startTime) {
+        return nRenderCutProcessSetStartTime(id, startTime) == 0;
+    }
+
+
+    /**
+     * 设置裁剪时长 秒
+     *
+     * @param id, renderId
+     * @param duration, 裁剪时长
+     * @return boolean
+     *
+     * */
+    public boolean RenderCutProcessSetDuration(String id, float duration) {
+        return nRenderCutProcessSetDuration(id, duration) == 0;
+    }
+
+    /**
+     * 开始渲染
+     *
+     * @param id, renderId
+     * @return boolean
+     * */
+    public boolean startRenderCutProcess(String id) {
+        return nRenderCutProcessStart(id) == 0;
+    }
+
+    /**
+     * 释放渲染资源
+     *
+     * @param id, renderId
+     * */
+    public void destroyRenderCutProcess(String id) {
+        nRenderCutProcessRelease(id);
     }
 
 
