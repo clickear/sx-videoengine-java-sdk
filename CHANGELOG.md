@@ -1,7 +1,10 @@
 # VE 视渲染引擎 java sdk
-### 1.4.7.alpha
+### 1.4.7.release
 + 修复日志组件并发初始化导致崩溃的问题
 + 增加 gif/ 视频素材裁剪接口
++ 增加ChannelShift与SuperFrame特效支持
++ 修复摄像机对3D父层的Z轴支持问题
++ 修复Mask导致的黑边
 
 ### 1.4.6.release
 + 图层统一使用所在合成帧率

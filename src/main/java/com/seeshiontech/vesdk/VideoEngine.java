@@ -647,6 +647,7 @@ public class VideoEngine {
     private native int nRenderCutProcessSetTransform(String id, int anchorX, int anchorY, int posX, int posY, float scale, float rotation);
     private native int nRenderCutProcessSetStartTime(String id, float startTime);
     private native int nRenderCutProcessSetDuration(String id, float duration);
+    private native int nRenderCutProcessSetBitrateControl(String id, float control);
     private native int nRenderCutProcessStart(String id);
     private native int nRenderCutProcessRelease(String id);
 
@@ -673,7 +674,7 @@ public class VideoEngine {
      * @param height, 高 px
      * @return boolean
      * */
-    public boolean RenderCutProcessSetSize(String id, int width, int height) {
+    public boolean setRenderCutProcessSize(String id, int width, int height) {
         return nRenderCutProcessSetSize(id, width, height) == 0;
     }
 
@@ -690,7 +691,7 @@ public class VideoEngine {
      * @param rotation, 旋转角度
      * @return boolean
      * */
-    public boolean RenderCutProcessSetTransform(String id, int anchorX, int anchorY, int posX, int posY, float scale, float rotation) {
+    public boolean setRenderCutProcessTransform(String id, int anchorX, int anchorY, int posX, int posY, float scale, float rotation) {
         return nRenderCutProcessSetTransform(id, anchorX, anchorY, posX, posY, scale, rotation) == 0;
     }
 
@@ -702,7 +703,7 @@ public class VideoEngine {
      * @return boolean
      *
      * */
-    public boolean RenderCutProcessSetStartTime(String id, float startTime) {
+    public boolean setRenderCutProcessStartTime(String id, float startTime) {
         return nRenderCutProcessSetStartTime(id, startTime) == 0;
     }
 
@@ -715,8 +716,21 @@ public class VideoEngine {
      * @return boolean
      *
      * */
-    public boolean RenderCutProcessSetDuration(String id, float duration) {
+    public boolean setRenderCutProcessDuration(String id, float duration) {
         return nRenderCutProcessSetDuration(id, duration) == 0;
+    }
+
+
+    /**
+     * 设置视频比特率参数，范围 > 0, 默认值 0.25
+     *
+     * @param id, renderId
+     * @param control, 范围 > 0, 默认值 0.25
+     * @return boolean
+     *
+     * */
+    public boolean setRenderCutProcessBitrateControl(String id, float control) {
+        return nRenderCutProcessSetBitrateControl(id, control) == 0;
     }
 
     /**
