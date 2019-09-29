@@ -1,5 +1,5 @@
 group 'seeshion.com'
-version '1.4.6.release'
+version '1.4.7.release'
 
 apply plugin: 'java'
 
