@@ -1,1 +1,1 @@
-sdk-version: 1.4.7.release
+sdk-version: 1.4.8.beta
