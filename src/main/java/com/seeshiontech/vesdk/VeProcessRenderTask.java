@@ -179,12 +179,22 @@ public class VeProcessRenderTask {
     /**
      * 是否保留视频中的音频
      * */
-//    private boolean retainAudioOfVideo = false;
+    private boolean retainAudioOfVideo = false;
 
     /**
      * 设置是否对动态模板中的视频替换素材自适应
      * */
 //    private boolean dynamicAdaptVideo = false;
+
+    /**
+     * 开启素材缓存管理器
+     * */
+    private  boolean enalbeSourceManager = false;
+
+    /**
+     * 素材管理器缓存大小,单位 m
+     * */
+    private int sourceManagerCacheSize = 300;
 
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
@@ -438,25 +448,6 @@ public class VeProcessRenderTask {
 
 
     /**
-     * 是否保留视频替换素材中的音频
-     *
-     * @param retainAudioOfVideo
-     * */
-//    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
-//        this.retainAudioOfVideo = retainAudioOfVideo;
-//    }
-
-
-    /**
-     * 渲染动态模板,是否对视频替换素材进行自适应
-     *
-     * @param dynamicAdaptVideo
-     * */
-//    public void setDynamicAdaptVideo(boolean dynamicAdaptVideo) {
-//        this.dynamicAdaptVideo = dynamicAdaptVideo;
-//    }
-
-    /**
      * 启动渲染
      *
      * @throws InvalidLicenseException
@@ -543,8 +534,15 @@ public class VeProcessRenderTask {
 
         engine.setRenderProcessBitrateControl(renderId, bitrateControl);
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
-//        engine.setRenderProcessDynamicAdaptVideo(renderId, dynamicAdaptVideo);
-//        engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
+
+        if (retainAudioOfVideo) {
+            engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
+        }
+
+        if (enalbeSourceManager) {
+            engine.enableRenderProcessSourceManager(renderId, enalbeSourceManager);
+            engine.setRenderProcessSourceManagerCacheSize(renderId, sourceManagerCacheSize);
+        }
 
         errorCode = engine.nStartRenderProcess(renderId);
 
@@ -631,6 +629,35 @@ public class VeProcessRenderTask {
         this.snapShotFrames = snapShotFrames;
     }
 
+
+    /**
+     * 开启素材缓存管理
+     *
+     * @param enable, true or false
+     * */
+    public void setEnableSourceManager(boolean enable) {
+        this.enalbeSourceManager = enable;
+    }
+
+
+    /**
+     * 设置素材管理器缓存大小，单位 M
+     *
+     * @param size, 默认 300
+     * */
+    public void setSourceManagerCacheSize(int size) {
+        this.sourceManagerCacheSize = size;
+    }
+
+
+    /**
+     * 是否保留视频素材的音频,
+     *
+     * @param retainAudioOfVideo, true or false， 默认: false
+     * */
+    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
+        this.retainAudioOfVideo = retainAudioOfVideo;
+    }
 
     /**
      * 获取渲染进度

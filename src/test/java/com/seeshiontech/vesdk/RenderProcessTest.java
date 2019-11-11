@@ -21,9 +21,8 @@ import java.util.concurrent.CountDownLatch;
 
 public class RenderProcessTest {
 
-    // license expire at 2019-07-20
-//    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzR/uzGfrP5ptm43dUV4Tw+ZGHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+ndcoEGbrnr5pHSs8JkGv0p35VzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBq0uhEEKtq2ZckKcaG/1/LVhldX4EWhjl7KxQkrTJWLI=";
-    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzRpgRS2yBRiLVW1Hw32LVz2WHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+nddJfNBgUv7w0oBRt7PGewAEVzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBxC8eAotvl2MdKwLYBrXuhVhldX4EWhjl7KxQkrTJWLI=";
+    // license expire at 2019-12-20
+    private String license = "uOkvS/xbv9Ta37phkqrCCfDlHz26dKA10ztb0jaJg7v3oCoOaZbYp9mZakMuaSPTrGjd1PVNcqMeJw7O27eCPTrMsvJpriX6XSJ5YRBWnCCS3GVLpmVM7EHVogR4enzRj8PaTHPrHNKUWC9cQ83cvmHZa39wuRtcM/tFaFoulVTUD5cpaZ+kP+2RJ6Je2laK6gj30X+UG4wp27XgT9zlaGibWccO2vbT17hz6dLOUqXgpjmRrHLnARvS0XVuQ/zXUYcojDcv/aeylpLuamDR8tS5RL1qgA1cDquYBKx+nde+8TP3DtLmH/kP2LdB0KPsVzEuGTZHX63gpmoaHfpUwNZoubkLLbanMttD0oRCtd0Y6Uvw5EEByyMd6nXXahCBcEYn17Tp4cifs55o85S8tFhldX4EWhjl7KxQkrTJWLI=";
 
     @Test
     public void testMulti() {
@@ -326,6 +325,40 @@ public class RenderProcessTest {
         } catch (RenderException e) {
             e.printStackTrace();
         } catch (NotSupportedTemplateException e) {
+            e.printStackTrace();
+        } finally {
+            task.destroy();
+        }
+    }
+
+
+    /**
+     * 测试保留视频素材中的音频
+     *
+     * */
+    @Test
+    public void testRetainAudioOfVideo() {
+
+        File f = new File("");
+        String basePath = f.getAbsolutePath();
+
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya_audio.mp4";
+
+        String[] paths = {
+                basePath + "/workspace/music.mp4",
+        };
+
+
+        VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+        task.setAssetPaths(paths);
+
+        // 开启保留视频素材中的音频， 开启后 music.mp4 的音频将会在输出视频中保留
+        task.setRetainAudioOfVideo(true);
+
+        try {
+            boolean ret = task.render();
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             task.destroy();

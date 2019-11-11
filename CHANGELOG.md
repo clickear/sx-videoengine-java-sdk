@@ -1,4 +1,13 @@
 # VE 视渲染引擎 java sdk
+
+### 1.4.9.beta
++ 新增素材管理接口
+    + task.setEnableSourceManager
+    + task.setSourceManagerCacheSize
++ 新增保留视频素材音频接口
+    + task.setRetainAudioOfVideo
+
+
 ### 1.4.8.beta
 + 新增倒影特效插件支持
 + 修复极端情况下渲染进程启动失败

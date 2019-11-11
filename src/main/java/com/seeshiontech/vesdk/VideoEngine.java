@@ -76,6 +76,9 @@ public class VideoEngine {
 
     private static  native void nRenderProcessInitLogger();
 
+    private native int nRenderProcessEnableSourceManager(String id, boolean enable);
+
+    private native int nRenderProcessSetSourceManagerCacheSize(String id, int size);
 
 
 
@@ -459,6 +462,31 @@ public class VideoEngine {
      * */
     public boolean setRenderProcessDynamicAdaptVideo(String id, boolean adapt) {
         return nRenderProcessSetDynamicAdaptVideo(id, adapt) == 0;
+    }
+
+
+    /**
+     * 开启素材缓存管理器，用于提升渲染速度，默认缓存池大小： 300, 单位: M
+     *
+     * @param id, render id
+     * @param enable, true or false
+     * @return boolean
+     * */
+    public boolean enableRenderProcessSourceManager(String id, boolean enable) {
+        return nRenderProcessEnableSourceManager(id, enable) == 0;
+    }
+
+
+    /**
+     * 设置素材管理器缓存池大小，默认缓存池大小： 300, 单位: M
+     *
+     * @param id, render id
+     * @param size, 大小， 单位： M
+     * @return boolean
+     *
+     * */
+    public boolean setRenderProcessSourceManagerCacheSize(String id, int size) {
+        return nRenderProcessSetSourceManagerCacheSize(id, size)  == 0;
     }
 
 
