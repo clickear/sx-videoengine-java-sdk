@@ -4,6 +4,7 @@ import com.seeshiontech.vesdk.exceptions.InvalidLicenseException;
 import com.seeshiontech.vesdk.exceptions.NotSupportedTemplateException;
 import com.seeshiontech.vesdk.exceptions.RenderException;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -69,12 +70,12 @@ public class VeProcessRenderTask {
     private boolean initialized = false;
 
     /**
-     * 音乐文件绝对路径
+     * 背景音乐文件绝对路径, 用于替换模板中内置音乐
      * */
     private String musicPath;
 
     /**
-     * 是否开启音乐循环
+     * 是否开启背景音乐循环
      * */
     private boolean musicLoop = false;
 
@@ -87,7 +88,7 @@ public class VeProcessRenderTask {
     private int musicFadeoutDuration = 0;
 
     /**
-     * 设置音量
+     * 设置背景音乐音量
      *
      * 最终音量为 : 原音量 * volume
      *
@@ -184,7 +185,7 @@ public class VeProcessRenderTask {
     /**
      * 设置是否对动态模板中的视频替换素材自适应
      * */
-//    private boolean dynamicAdaptVideo = false;
+    private boolean dynamicAdaptVideo = false;
 
     /**
      * 开启素材缓存管理器
@@ -195,6 +196,12 @@ public class VeProcessRenderTask {
      * 素材管理器缓存大小,单位 m
      * */
     private int sourceManagerCacheSize = 300;
+
+
+    /**
+     * 音轨列表
+     * */
+    private List<AudioTrack> audioTrackList = new ArrayList<>();
 
 
     public VeProcessRenderTask(String license, String tplFolder, String outputPath) {
@@ -247,21 +254,6 @@ public class VeProcessRenderTask {
     public String getStatus() {
         return status;
     }
-
-    public boolean isMusicLoop() {
-        return musicLoop;
-    }
-
-    /**
-     * 设置音乐是否循环
-     *
-     * @param musicLoop
-     * */
-    public void setMusicLoop(boolean musicLoop) {
-        this.musicLoop = musicLoop;
-    }
-
-
     /**
      * 设置模板类型
      *
@@ -327,7 +319,7 @@ public class VeProcessRenderTask {
     }
 
     /**
-     * 设置音乐文件
+     * 设置背景音乐文件
      *
      * @param musicPath
      * @param loopMusic
@@ -340,6 +332,74 @@ public class VeProcessRenderTask {
 
 
     /**
+     * 设置音乐是否循环
+     *
+     * @param musicLoop
+     * */
+    public void setMusicLoop(boolean musicLoop) {
+        this.musicLoop = musicLoop;
+    }
+
+
+    public boolean isMusicLoop() {
+        return musicLoop;
+    }
+
+
+    /**
+     * 设置背景淡出时间, 单位秒
+     *
+     * @param musicFadeoutDuration
+     *
+     * */
+    public void setMusicFadeoutDuration(int musicFadeoutDuration) {
+        this.musicFadeoutDuration = musicFadeoutDuration;
+    }
+
+    public int getMusicFadeoutDuration() {
+        return musicFadeoutDuration;
+    }
+
+    /**
+     * 设置背景音量
+     *
+     * 0 - 1.0, 输出音量为原音量 * musicVolume
+     *
+     * @param musicVolume
+     * */
+    public void setMusicVolume(float musicVolume) {
+        this.musicVolume = musicVolume;
+    }
+
+
+    public float getMusicVolume() {
+        return musicVolume;
+    }
+
+    /**
+     * 添加音轨
+     *
+     * @param track, see {@link AudioTrack}
+     * */
+    public void addAudioTrack(AudioTrack track) {
+        this.audioTrackList.add(track);
+    }
+
+
+    /**
+     * 设置音轨列表
+     *
+     * @param audioTrackList
+     * */
+    public void setAudioTrackList(List<AudioTrack> audioTrackList) {
+        this.audioTrackList = audioTrackList;
+    }
+
+    public List<AudioTrack> getAudioTrackList() {
+        return this.audioTrackList;
+    }
+
+    /**
      * 设置视频比特率控制参数,默认 0.25
      *
      * @param control
@@ -349,12 +409,9 @@ public class VeProcessRenderTask {
     }
 
 
-    public List<Watermark> getWatermarkList() {
-        return watermarkList;
-    }
 
     /**
-     * 设置水印
+     * 设置水印列表
      *
      * @param watermarkList
      *
@@ -363,33 +420,8 @@ public class VeProcessRenderTask {
         this.watermarkList = watermarkList;
     }
 
-    public int getMusicFadeoutDuration() {
-        return musicFadeoutDuration;
-    }
-
-    /**
-     * 设置淡出时间, 单位秒
-     *
-     * @param musicFadeoutDuration
-     *
-     * */
-    public void setMusicFadeoutDuration(int musicFadeoutDuration) {
-        this.musicFadeoutDuration = musicFadeoutDuration;
-    }
-
-    public float getMusicVolume() {
-        return musicVolume;
-    }
-
-    /**
-     * 设置音量
-     *
-     * 0 - 1.0, 输出音量为原音量 * musicVolume
-     *
-     * @param musicVolume
-     * */
-    public void setMusicVolume(float musicVolume) {
-        this.musicVolume = musicVolume;
+    public List<Watermark> getWatermarkList() {
+        return watermarkList;
     }
 
 
@@ -508,6 +540,15 @@ public class VeProcessRenderTask {
                 Watermark mark = it.next();
                 String[] paths = mark.getPaths().toArray(new String[mark.getPaths().size()]);
                 engine.addRenderProcessWatermark(renderId, paths, mark.getPosX(), mark.getPoxY(), mark.getTimeStart(), mark.getTimeEnd(), mark.getScaleX(), mark.getScaleY());
+            }
+        }
+
+        if (audioTrackList != null && audioTrackList.size() > 0) {
+            Iterator<AudioTrack> it = audioTrackList.iterator();
+            while(it.hasNext()) {
+                AudioTrack track = it.next();
+                engine.addRenderProcessAudioTrack(renderId, track.getAudioPath(), track.getInPoint(), track.getDuration(),
+                        track.getStartTime(), track.getEndTime(), track.isLoop(), track.getVolume());
             }
         }
 

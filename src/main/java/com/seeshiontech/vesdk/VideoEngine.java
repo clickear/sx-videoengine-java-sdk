@@ -80,6 +80,9 @@ public class VideoEngine {
 
     private native int nRenderProcessSetSourceManagerCacheSize(String id, int size);
 
+    private native int nRenderProcessAddAudioTrack(String id, String audioPath, float inPoint, float duration,
+                                                   float startTime, float endTime, boolean loop, float volume);
+
 
 
     /**********************************************************************************
@@ -317,6 +320,27 @@ public class VideoEngine {
         return nRenderProcessSetMusicVolume(id, volume) == 0;
     }
 
+    /**
+     * 添加音轨, 此方法添加的音轨不会替换背景音乐
+     *
+     * @param id
+     * @param audioPath, 包含音频的文件地址，比如　mp3, 带有音轨的　mp4
+     * @param inPoint, 音频出现的时间点，单位：秒;
+     * 					0: 起始点开始出现
+     * @param duration, 音频持续时长，单位：秒;
+     * 					0: 持续到视频结束
+     * @param startTime, 音频截取开始时间点，单位：秒;
+     * 					0: 从音频起始点开始截取
+     * @param endTime, 音频截取结束时间点，单位: 秒;
+     * 					0 截取到音频末尾
+     * @param loop, 音频长度不够是否循环, 默认不循环
+     * @param volume, 音量， 大于 0, 默认 1
+     */
+    public boolean addRenderProcessAudioTrack(String id, String audioPath, float inPoint, float duration,
+                                                float startTime, float endTime, boolean loop, float volume) {
+       return nRenderProcessAddAudioTrack(id, audioPath, inPoint, duration, startTime, endTime, loop, volume) == 0;
+    }
+
 
     /**
      * 添加水印
@@ -331,7 +355,8 @@ public class VideoEngine {
      * @param scaleY    y 轴缩放
      * @return boolean
      */
-    public boolean addRenderProcessWatermark(String id, String[] paths, float posX, float posY, float timeStart, float timeEnd, float scaleX, float scaleY) {
+    public boolean addRenderProcessWatermark(String id, String[] paths, float posX, float posY, float timeStart,
+                                             float timeEnd, float scaleX, float scaleY) {
         return nRenderProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY) == 0;
     }
 
@@ -715,7 +740,7 @@ public class VideoEngine {
      * @param anchorY, y 轴 锚点位置 px
      * @param posX, x 轴移动位置 px
      * @param posY, y 轴移动位置 px
-     * @param scale, 缩放比例 0 - 1
+     * @param scale, 缩放比例
      * @param rotation, 旋转角度
      * @return boolean
      * */

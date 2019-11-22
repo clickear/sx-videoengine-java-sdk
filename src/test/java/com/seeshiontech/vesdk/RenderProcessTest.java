@@ -365,6 +365,7 @@ public class RenderProcessTest {
         }
     }
 
+
     /**
      * 测试脚本
      * */
@@ -395,6 +396,58 @@ public class RenderProcessTest {
 
         try {
             boolean ret = task.render();
+        } catch (InvalidLicenseException e) {
+            e.printStackTrace();
+        } catch (RenderException e) {
+            e.printStackTrace();
+        } catch (NotSupportedTemplateException e) {
+            e.printStackTrace();
+        } finally {
+            task.destroy();
+        }
+    }
+
+
+    /**
+     * 测试音轨添加
+     * */
+
+    @Test
+    public void testAddAudioTrack() {
+        File f = new File("");
+        String basePath = f.getAbsolutePath();
+
+
+        String tplFolder = basePath + "/workspace/template/kenbentuya/";
+        String outputPath = basePath + "/workspace/output/kenbentuya_add_audio_track.mp4";
+
+        String[] paths = {
+                basePath + "/workspace/assets/1.jpeg",
+                basePath + "/workspace/assets/2.jpeg",
+                basePath + "/workspace/assets/3.jpeg",
+                basePath + "/workspace/assets/4.jpeg",
+                basePath + "/workspace/assets/5.jpeg",
+                basePath + "/workspace/assets/6.jpeg"
+        };
+
+
+        VeProcessRenderTask task = new VeProcessRenderTask(license, tplFolder, outputPath);
+        task.setAssetPaths(paths);
+
+        AudioTrack track = new AudioTrack(basePath + "/workspace/music.mp4");
+        track.setLoop(true);
+        task.addAudioTrack(track);
+
+        try {
+            boolean ret = task.render();
+
+            // 获取渲染状态
+            String info = task.getTaskRenderedInfo();
+
+            // 获取渲染错误码
+            int errorCode = task.getErrorCode();
+
+            System.out.println(info + " : " + errorCode);
         } catch (InvalidLicenseException e) {
             e.printStackTrace();
         } catch (RenderException e) {
