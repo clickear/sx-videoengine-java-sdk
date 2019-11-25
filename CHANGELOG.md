@@ -1,12 +1,18 @@
 # VE 视渲染引擎 java sdk
 
+### 1.5.0.release
++ 多音轨添加支持
+    task.addAudioTrack
++ 新增Supper Mosaic特效支持
++ Supper Frame特效新增Content Layer参数支持
++ 新增动态模版动态边框适配方式
+
 ### 1.4.9.beta
 + 新增素材管理接口
     + task.setEnableSourceManager
     + task.setSourceManagerCacheSize
 + 新增保留视频素材音频接口
     + task.setRetainAudioOfVideo
-
 
 ### 1.4.8.beta
 + 新增倒影特效插件支持
