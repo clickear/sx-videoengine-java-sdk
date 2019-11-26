@@ -3,6 +3,8 @@
 ### 1.5.0.release
 + 多音轨添加支持
     task.addAudioTrack
++ 支持动态模板视频素材自适应
+    task.setDynamicAdaptVideo
 + 新增Supper Mosaic特效支持
 + Supper Frame特效新增Content Layer参数支持
 + 新增动态模版动态边框适配方式

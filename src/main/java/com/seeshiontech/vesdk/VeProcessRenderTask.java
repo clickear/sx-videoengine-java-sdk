@@ -190,7 +190,7 @@ public class VeProcessRenderTask {
     /**
      * 开启素材缓存管理器
      * */
-    private  boolean enalbeSourceManager = false;
+    private  boolean enableSourceManager = false;
 
     /**
      * 素材管理器缓存大小,单位 m
@@ -576,12 +576,11 @@ public class VeProcessRenderTask {
         engine.setRenderProcessBitrateControl(renderId, bitrateControl);
         engine.setRenderProcessMusicLoop(renderId, this.musicLoop);
 
-        if (retainAudioOfVideo) {
-            engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
-        }
+        engine.setRenderProcessRetainAudioOfVideo(renderId, retainAudioOfVideo);
+        engine.setRenderProcessDynamicAdaptVideo(renderId, dynamicAdaptVideo);
 
-        if (enalbeSourceManager) {
-            engine.enableRenderProcessSourceManager(renderId, enalbeSourceManager);
+        if (enableSourceManager) {
+            engine.enableRenderProcessSourceManager(renderId, enableSourceManager);
             engine.setRenderProcessSourceManagerCacheSize(renderId, sourceManagerCacheSize);
         }
 
@@ -677,7 +676,7 @@ public class VeProcessRenderTask {
      * @param enable, true or false
      * */
     public void setEnableSourceManager(boolean enable) {
-        this.enalbeSourceManager = enable;
+        this.enableSourceManager = enable;
     }
 
 
@@ -698,6 +697,18 @@ public class VeProcessRenderTask {
      * */
     public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
         this.retainAudioOfVideo = retainAudioOfVideo;
+    }
+
+    /**
+     * 是否启用视频素材自适应功能，只对动态模板有效
+     * 开启后，视频素材展示为下列两种情况：
+     * + 视频时长 < 片段时长，视频素材只会播放一遍，然后停留在最后1帧
+     * + 视频时长 > 片段时长，视频素材会被分拆成多段，在连续的片段中播放
+     *
+     * @param  adaptVideo
+     * */
+    public void setDynamicAdaptVideo(boolean adaptVideo) {
+        this.dynamicAdaptVideo = adaptVideo;
     }
 
     /**
