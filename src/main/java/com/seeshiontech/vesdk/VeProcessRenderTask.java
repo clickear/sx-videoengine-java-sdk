@@ -140,7 +140,7 @@ public class VeProcessRenderTask {
     private String textPainterPath;
 
     /**
-     * 水印
+     * 水印列表
      * */
     private List<Watermark> watermarkList;
 
@@ -215,10 +215,12 @@ public class VeProcessRenderTask {
         }
     }
 
+
     public VeProcessRenderTask(String license, String tplFolder, String outputFile, String[] assetPaths) {
         this(license, tplFolder, outputFile);
         this.assetPaths = assetPaths;
     }
+
 
     private boolean initTask() {
         if (engine == null) {
@@ -233,27 +235,7 @@ public class VeProcessRenderTask {
         return true;
     }
 
-    /**
-     * 获取渲染错误码
-     *
-     * @return int, see {@link ErrorCode}
-     * */
-    public int getErrorCode() {
-        if (engine != null) {
-           return engine.getRenderProcessError(renderId) ;
-        }
-        return ErrorCode.ERR.getErrCode();
-    }
 
-
-    /**
-     * 获取渲染任务状态
-     *
-     * @return String, see {@link RenderStatus}
-     * */
-    public String getStatus() {
-        return status;
-    }
     /**
      * 设置模板类型
      *
@@ -341,11 +323,6 @@ public class VeProcessRenderTask {
     }
 
 
-    public boolean isMusicLoop() {
-        return musicLoop;
-    }
-
-
     /**
      * 设置背景淡出时间, 单位秒
      *
@@ -356,9 +333,6 @@ public class VeProcessRenderTask {
         this.musicFadeoutDuration = musicFadeoutDuration;
     }
 
-    public int getMusicFadeoutDuration() {
-        return musicFadeoutDuration;
-    }
 
     /**
      * 设置背景音量
@@ -371,10 +345,6 @@ public class VeProcessRenderTask {
         this.musicVolume = musicVolume;
     }
 
-
-    public float getMusicVolume() {
-        return musicVolume;
-    }
 
     /**
      * 添加音轨
@@ -395,9 +365,11 @@ public class VeProcessRenderTask {
         this.audioTrackList = audioTrackList;
     }
 
+
     public List<AudioTrack> getAudioTrackList() {
         return this.audioTrackList;
     }
+
 
     /**
      * 设置视频比特率控制参数,默认 0.25
@@ -409,7 +381,6 @@ public class VeProcessRenderTask {
     }
 
 
-
     /**
      * 设置水印列表
      *
@@ -419,6 +390,7 @@ public class VeProcessRenderTask {
     public void setWatermarkList(List<Watermark> watermarkList) {
         this.watermarkList = watermarkList;
     }
+
 
     public List<Watermark> getWatermarkList() {
         return watermarkList;
@@ -449,13 +421,15 @@ public class VeProcessRenderTask {
         this.subTextJson = subTextJson;
     }
 
+
     /**
-     * 设置引擎生成的素材存放目录,
+     * 设置引擎生成的素材存放目录
+     *
      *
      * <p>
      * 1. TextPainter 绘制的文字图片会被放到设置的目录, 引擎不会对该目录执行清理动作,
      * 需要调用方在渲染完成后,删除该目录进行清理 <br>
-     * 2.  由于生成的素材可能与别的任务重名,所以建议每个任务使用单独的素材目录
+     * 2. 为避免文件被其他任务修改覆盖，确保该目录为一个任务独享
      * </p>
      *
      * @param assetPath, 素材存放目录
@@ -476,6 +450,103 @@ public class VeProcessRenderTask {
      * */
     public void setTextPainterDir(String textPainterPath) {
         this.textPainterPath = textPainterPath;
+    }
+
+
+    /**
+     * 设置脚本目录
+     *
+     * @param scriptDir
+     * */
+    public void setScriptDir(String scriptDir) {
+        this.scriptDir = scriptDir;
+    }
+
+
+    /**
+     * 设置脚本参数
+     *
+     * @param scriptData
+     * */
+    public void setScriptData(String scriptData) {
+        this.scriptData = scriptData;
+    }
+
+
+    /**
+     * 设置脚本主文件路径
+     *
+     * @param  scriptMainFile
+     * */
+    public void setScriptMainFile(String scriptMainFile) {
+        this.scriptMainFile = scriptMainFile;
+    }
+
+
+    /**
+     * 设置快照保存目录
+     *
+     * @note 为避免文件被其他任务修改覆盖，确保该目录为一个任务独享
+     *
+     * @param snapShotPath, 目录
+     * */
+    public void setSnapShotPath(String snapShotPath) {
+        this.snapShotPath = snapShotPath;
+    }
+
+
+    /**
+     * 设置快照帧索引
+     *
+     * [1, 100] 表示第1, 100 帧会被生成 1.png , 100.png 到 snapshot path 目录中
+     *
+     * @param snapShotFrames, 帧数组
+     * */
+    public void setSnapShotFrames(int[] snapShotFrames) {
+        this.snapShotFrames = snapShotFrames;
+    }
+
+
+    /**
+     * 开启素材缓存管理
+     *
+     * @param enable, true or false
+     * */
+    public void setEnableSourceManager(boolean enable) {
+        this.enableSourceManager = enable;
+    }
+
+
+    /**
+     * 设置素材管理器缓存大小，单位 M
+     *
+     * @param size, 默认 300
+     * */
+    public void setSourceManagerCacheSize(int size) {
+        this.sourceManagerCacheSize = size;
+    }
+
+
+    /**
+     * 是否保留视频素材的音频,
+     *
+     * @param retainAudioOfVideo, true or false， 默认: false
+     * */
+    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
+        this.retainAudioOfVideo = retainAudioOfVideo;
+    }
+
+
+    /**
+     * 是否启用视频素材自适应功能，只对动态模板有效
+     * 开启后，视频素材展示为下列两种情况：
+     * + 视频时长 < 片段时长，视频素材只会播放一遍，然后停留在最后1帧
+     * + 视频时长 > 片段时长，视频素材会被分拆成多段，在连续的片段中播放
+     *
+     * @param  adaptVideo
+     * */
+    public void setDynamicAdaptVideo(boolean adaptVideo) {
+        this.dynamicAdaptVideo = adaptVideo;
     }
 
 
@@ -604,114 +675,6 @@ public class VeProcessRenderTask {
 
 
     /**
-     * 获取渲染后的信息, 在 render() 后调用
-     *
-     * */
-    public String getTaskRenderedInfo() {
-        return engine != null ? engine.getRenderProcessRenderedInfo(renderId) : "";
-    }
-
-
-    /**
-     * 销毁渲染资源,必须调用
-     * */
-    public void destroy() {
-       engine.destroyRenderProcess(renderId);
-    }
-
-
-    /**
-     * 设置脚本目录
-     *
-     * @param scriptDir
-     * */
-    public void setScriptDir(String scriptDir) {
-        this.scriptDir = scriptDir;
-    }
-
-    /**
-     * 设置脚本参数
-     *
-     * @param scriptData
-     * */
-    public void setScriptData(String scriptData) {
-        this.scriptData = scriptData;
-    }
-
-    /**
-     * 设置脚本主文件路径
-     *
-     * @param  scriptMainFile
-     * */
-    public void setScriptMainFile(String scriptMainFile) {
-        this.scriptMainFile = scriptMainFile;
-    }
-
-
-    /**
-     * 设置快照保存目录
-     *
-     * @param snapShotPath, 目录
-     * */
-    public void setSnapShotPath(String snapShotPath) {
-        this.snapShotPath = snapShotPath;
-    }
-
-
-    /**
-     * 设置快照帧索引
-     *
-     * [1, 100] 表示第1, 100 帧会被生成 1.png , 100.png 到 snapshot path 目录中
-     *
-     * @param snapShotFrames, 帧数组
-     * */
-    public void setSnapShotFrames(int[] snapShotFrames) {
-        this.snapShotFrames = snapShotFrames;
-    }
-
-
-    /**
-     * 开启素材缓存管理
-     *
-     * @param enable, true or false
-     * */
-    public void setEnableSourceManager(boolean enable) {
-        this.enableSourceManager = enable;
-    }
-
-
-    /**
-     * 设置素材管理器缓存大小，单位 M
-     *
-     * @param size, 默认 300
-     * */
-    public void setSourceManagerCacheSize(int size) {
-        this.sourceManagerCacheSize = size;
-    }
-
-
-    /**
-     * 是否保留视频素材的音频,
-     *
-     * @param retainAudioOfVideo, true or false， 默认: false
-     * */
-    public void setRetainAudioOfVideo(boolean retainAudioOfVideo) {
-        this.retainAudioOfVideo = retainAudioOfVideo;
-    }
-
-    /**
-     * 是否启用视频素材自适应功能，只对动态模板有效
-     * 开启后，视频素材展示为下列两种情况：
-     * + 视频时长 < 片段时长，视频素材只会播放一遍，然后停留在最后1帧
-     * + 视频时长 > 片段时长，视频素材会被分拆成多段，在连续的片段中播放
-     *
-     * @param  adaptVideo
-     * */
-    public void setDynamicAdaptVideo(boolean adaptVideo) {
-        this.dynamicAdaptVideo = adaptVideo;
-    }
-
-    /**
      * 获取渲染进度
      *
      * 无论成功失败,最终都会返回 1.0
@@ -726,4 +689,45 @@ public class VeProcessRenderTask {
 
         return 0f;
     }
+
+
+    /**
+     * 获取渲染错误码
+     *
+     * @return int, see {@link ErrorCode}
+     * */
+    public int getErrorCode() {
+        if (engine != null) {
+            return engine.getRenderProcessError(renderId) ;
+        }
+        return ErrorCode.ERR.getErrCode();
+    }
+
+
+    /**
+     * 获取渲染任务状态
+     *
+     * @return String, see {@link RenderStatus}
+     * */
+    public String getStatus() {
+        return status;
+    }
+
+
+    /**
+     * 获取渲染后的信息, 在 render() 后调用
+     *
+     * */
+    public String getTaskRenderedInfo() {
+        return engine != null ? engine.getRenderProcessRenderedInfo(renderId) : "";
+    }
+
+
+    /**
+     * 销毁渲染资源,必须调用
+     * */
+    public void destroy() {
+        engine.destroyRenderProcess(renderId);
+    }
+
 }

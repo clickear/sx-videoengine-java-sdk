@@ -96,7 +96,7 @@ public class VideoEngine {
      * 创建进程模式渲染对象
      *
      * @param tplFolder,  模板目录
-     * @param outputFile, 输出路径
+     * @param outputFile, 输出路径,确保输出路径唯一，不会被其他任务覆盖
      * @param key         随机数，同一时间保持唯一
      * @return string render id
      */
@@ -208,7 +208,7 @@ public class VideoEngine {
 
 
     /**
-     * 设置引擎生成的素材存放目录
+     * 设置引擎生成的素材存放目录, 确保一个目录同一时间只有一个任务使用
      *
      * <p>
      * 1. TextPainter 绘制的文字图片会被放到设置 AssetPath目录, 引擎不会对该目录执行清理动作,
@@ -242,7 +242,7 @@ public class VideoEngine {
 
 
     /**
-     * 设置快照存储目录
+     * 设置快照存储目录,确保一个目录同一时间只有一个任务使用
      *
      * <p>
      * 引擎将使用该目录保存快照
@@ -320,6 +320,7 @@ public class VideoEngine {
         return nRenderProcessSetMusicVolume(id, volume) == 0;
     }
 
+
     /**
      * 添加音轨, 此方法添加的音轨不会替换背景音乐
      *
@@ -360,6 +361,7 @@ public class VideoEngine {
         return nRenderProcessAddWatermark(id, paths, posX, posY, timeStart, timeEnd, scaleX, scaleY) == 0;
     }
 
+
     /**
      * 启动渲染, 返回成功或失败
      *
@@ -372,6 +374,7 @@ public class VideoEngine {
     public boolean startRenderProcess(String id) throws RenderException, NotSupportedTemplateException, InvalidLicenseException {
         return nRenderProcessStart(id) == 0;
     }
+
 
     /**
      * 启动渲染, 返回响应错误码
@@ -399,6 +402,7 @@ public class VideoEngine {
         return nRenderProcessProgress(id);
     }
 
+
     /**
      * 获取渲染错误
      *
@@ -408,6 +412,7 @@ public class VideoEngine {
     public int getRenderProcessError(String id) {
         return nRenderProcessError(id);
     }
+
 
     /**
      * 获取渲染后的状态
@@ -419,6 +424,7 @@ public class VideoEngine {
         return nRenderProcessStatus(id);
     }
 
+
     /**
      * 销毁渲染对象
      *
@@ -427,6 +433,7 @@ public class VideoEngine {
     public void destroyRenderProcess(String id) {
         nRenderProcessRelease(id);
     }
+
 
     /**
      * 设置比特率控制参数
@@ -438,6 +445,7 @@ public class VideoEngine {
     public boolean setRenderProcessBitrateControl(String id, float control) {
         return nRenderProcessSetBitrateControl(id, control) == 0;
     }
+
 
     /**
      * 设置渲染任务 Lua 脚本
