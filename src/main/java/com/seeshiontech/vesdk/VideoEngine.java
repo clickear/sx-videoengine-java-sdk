@@ -95,8 +95,10 @@ public class VideoEngine {
     /**
      * 创建进程模式渲染对象
      *
+     * @note 为避免文件被覆盖，确保输出路径只有当前任务读写
+     *
      * @param tplFolder,  模板目录
-     * @param outputFile, 输出路径,确保输出路径唯一，不会被其他任务覆盖
+     * @param outputFile, 输出路径
      * @param key         随机数，同一时间保持唯一
      * @return string render id
      */
@@ -208,12 +210,12 @@ public class VideoEngine {
 
 
     /**
-     * 设置引擎生成的素材存放目录, 确保一个目录同一时间只有一个任务使用
+     * 设置引擎生成的素材存放目录
      *
      * <p>
      * 1. TextPainter 绘制的文字图片会被放到设置 AssetPath目录, 引擎不会对该目录执行清理动作,
      * 需要调用方在渲染完成后,删除该目录进行清理 <br>
-     * 2. 由于生成的素材可能与其他任务的图片重名, 所以建议每个任务使用单独的素材目录
+     * 2. 由于生成的素材可能与其他任务的图片重名, 确保每个任务使用单独的素材目录
      * </p>
      *
      * @param id,   render id
